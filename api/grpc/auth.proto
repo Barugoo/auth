@@ -1,0 +1,83 @@
+syntax="proto3";
+package Auth;
+
+service Auth {
+    rpc Register(RegisterRequest) returns (RegisterReply) {}
+    rpc Login (LoginRequest) returns (LoginReply) {}
+    rpc UpdateCredentials (UpdateCredentialsRequest) returns (UpdateCredentialsReply){}
+    rpc ActivateAccount(ActivateAccountRequest) returns (ActivateAccountReply){}
+    rpc Generate2FA(Generate2FARequest) returns (Generate2FAReply){}
+    rpc Setup2FA(Setup2FARequest) returns (Setup2FAReply){}
+    rpc Disable2FA(Disable2FARequest) returns (Disable2FAReply){}
+    rpc Verify2FA(Verify2FARequest) returns (Verify2FAReply){}
+} 
+
+message RegisterRequest {
+    string email = 1;
+    string password = 2;
+}
+
+message RegisterReply {
+    bool ok = 1;
+}
+
+message LoginRequest {
+    string email = 1;
+    string password = 2;
+}
+
+message LoginReply {
+    string token = 1;
+}
+
+message UpdateCredentialsRequest {
+    string email = 1;
+    string password = 2;
+}
+
+message UpdateCredentialsReply {
+    bool ok = 1;
+}
+
+message ActivateAccountRequest {
+    string email = 1;
+}
+
+message ActivateAccountReply {
+    bool ok = 1;
+}
+
+message Generate2FARequest {
+    string email = 1;
+}
+
+message Generate2FAReply {
+    bytes qr_image = 1;
+}
+
+message Setup2FARequest {
+    string email = 1;
+    string code = 2;
+}
+
+message Setup2FAReply {
+    bool ok = 1;
+}
+
+message Disable2FARequest {
+    string email = 1;
+    string code = 2;
+}
+
+message Disable2FAReply {
+    bool ok = 1;
+}
+
+message Verify2FARequest {
+    string email = 1;
+    string code = 2;
+}
+
+message Verify2FAReply {
+    bool ok = 1;
+}
