@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	authDB = "auth"
+	authDB = "auth_db"
 )
 
 func main() {
