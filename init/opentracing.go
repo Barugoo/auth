@@ -3,6 +3,7 @@ package init
 import (
 	"io"
 
+	"github.com/uber/jaeger-lib/metrics"
 	opentracing "github.com/opentracing/opentracing-go"
 	jaeger "github.com/uber/jaeger-client-go"
 	jaeger_config "github.com/uber/jaeger-client-go/config"
@@ -21,5 +22,8 @@ func NewTracer(config *config.ServiceConfig) (opentracing.Tracer, io.Closer, err
 			LogSpans: true,
 		},
 	}
-	return cfg.NewTracer(jaeger_config.Logger(jaeger.StdLogger))
+	return cfg.NewTracer(
+		jaeger_config.Logger(jaeger.StdLogger)
+		jaeger_config.Metrics(metrics.NullFactory)
+	)
 }
