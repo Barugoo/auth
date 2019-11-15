@@ -13,6 +13,10 @@ type authGRPCServer struct {
 	uc usecase.AccountUsecase
 }
 
+func NewAuthGRPCServer(accountUsecase usecase.AccountUsecase) pb.AuthServer {
+	return &authGRPCServer{accountUsecase}
+}
+
 func (auth *authGRPCServer) Register(ctx context.Context, req *pb.RegisterRequest) (*pb.RegisterReply, error) {
 	r := &models.Credentials{
 		Email:    req.Email,
@@ -103,8 +107,4 @@ func (auth *authGRPCServer) Verify2FA(ctx context.Context, req *pb.Verify2FARequ
 	return &pb.Verify2FAReply{
 		Ok: ok,
 	}, err
-}
-
-func NewAuthGRPCServer(accountUsecase usecase.AccountUsecase) pb.AuthServer {
-	return &authGRPCServer{accountUsecase}
 }
