@@ -2,7 +2,6 @@ package init
 
 import (
 	"google.golang.org/grpc"
-	"net"
 
 	api "github.com/barugoo/oscillo-auth/api/grpc"
 	auth "github.com/barugoo/oscillo-auth/internal/delivery/grpc/server"
