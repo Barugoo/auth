@@ -9,9 +9,11 @@ import (
 	"github.com/barugoo/oscillo-auth/internal/usecase"
 )
 
-func NewGRPCServer(accUC usecase.AccountUsecase) (*grpc.Server, error) {
+func NewGRPCServer(accUC usecase.AccountUsecase) *grpc.Server {
 	s := auth.NewAuthGRPCServer(accUC)
+
 	grpcServer := grpc.NewServer()
 	api.RegisterAuthServer(grpcServer, s)
-	return grpcServer, nil
+
+	return grpcServer
 }

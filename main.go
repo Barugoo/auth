@@ -32,10 +32,7 @@ func main() {
 
 	usecase := usecase.NewAccountUsecase(cfg, service, db)
 
-	grpcServer, err := init.NewGRPCServer(usecase)
-	if err != nil {
-		log.Fatal(err)
-	}
+	grpcServer := init.NewGRPCServer(usecase)
 	lis, err := net.Listen("tcp", cfg.AddressGRPC)
 	if err != nil {
 		return nil, err
