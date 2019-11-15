@@ -35,7 +35,7 @@ func main() {
 	grpcServer := init.NewGRPCServer(usecase)
 	lis, err := net.Listen("tcp", cfg.AddressGRPC)
 	if err != nil {
-		return nil, err
+		log.Fatal(err)
 	}
 	grpcServer.Serve(lis)
 }
