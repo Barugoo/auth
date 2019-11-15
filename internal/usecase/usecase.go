@@ -33,7 +33,7 @@ type accountUsecase struct {
 }
 
 func NewAccountUsecase(config *config.ServiceConfig, service service.AuthService, db repository.AccountRepository) AccountUsecase {
-	return accountUsecase{
+	return &accountUsecase{
 		config:  config,
 		service: service,
 		db:      db,
