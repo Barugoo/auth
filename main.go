@@ -24,7 +24,7 @@ func main() {
 	defer closer.Close()
 	service := service.NewAuthService(tracer)
 
-	mgoClient, err := init.NewMongoClient(cfg.MongoURI)
+	mgoClient, err := init.NewMongoClient(cfg)
 	if err != nil {
 		log.Fatal(err)
 	}

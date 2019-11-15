@@ -5,10 +5,12 @@ import (
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+
+	"github.com/barugoo/oscillo-auth/config"
 )
 
-func NewMongoClient(uri string) (*mongo.Client, error) {
-	client, err := mongo.NewClient(options.Client().ApplyURI(uri))
+func NewMongoClient(config *config.ServiceConfig) (*mongo.Client, error) {
+	client, err := mongo.NewClient(options.Client().ApplyURI(config.MongoURI))
 	if err != nil {
 		return nil, err
 	}
