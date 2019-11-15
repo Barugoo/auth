@@ -13,7 +13,7 @@ type authGRPCServer struct {
 	uc usecase.AccountUsecase
 }
 
-func (auth *authGRPCServer) Register(ctx *context.Context, req *pb.RegisterRequest) (*pb.RegisterReply, error) {
+func (auth *authGRPCServer) Register(ctx context.Context, req *pb.RegisterRequest) (*pb.RegisterReply, error) {
 	r := &models.Credentials{
 		Email:    req.Email,
 		Password: req.Password,
@@ -27,7 +27,7 @@ func (auth *authGRPCServer) Register(ctx *context.Context, req *pb.RegisterReque
 	}, err
 }
 
-func (auth *authGRPCServer) Login(ctx *context.Context, req *pb.LoginRequest) (*pb.LoginReply, error) {
+func (auth *authGRPCServer) Login(ctx context.Context, req *pb.LoginRequest) (*pb.LoginReply, error) {
 	r := &models.Credentials{
 		Email:    req.Email,
 		Password: req.Password,
@@ -41,7 +41,7 @@ func (auth *authGRPCServer) Login(ctx *context.Context, req *pb.LoginRequest) (*
 	}, err
 }
 
-func (auth *authGRPCServer) UpdateCredentials(ctx *context.Context, req *pb.LoginRequest) (*pb.UpdateCredentialsReply, error) {
+func (auth *authGRPCServer) UpdateCredentials(ctx context.Context, req *pb.LoginRequest) (*pb.UpdateCredentialsReply, error) {
 	r := &models.Credentials{
 		Email:    req.Email,
 		Password: req.Password,
@@ -55,7 +55,7 @@ func (auth *authGRPCServer) UpdateCredentials(ctx *context.Context, req *pb.Logi
 	}, err
 }
 
-func (auth *authGRPCServer) ActivateAccount(ctx *context.Context, req *pb.ActivateAccountRequest) (*pb.ActivateAccountReply, error) {
+func (auth *authGRPCServer) ActivateAccount(ctx context.Context, req *pb.ActivateAccountRequest) (*pb.ActivateAccountReply, error) {
 	ok, err := auth.uc.ActivateAccount(req.Email)
 	if err != nil {
 		return nil, err
@@ -65,7 +65,7 @@ func (auth *authGRPCServer) ActivateAccount(ctx *context.Context, req *pb.Activa
 	}, err
 }
 
-func (auth *authGRPCServer) Generate2FA(ctx *context.Context, req *pb.Generate2FARequest) (*pb.Generate2FAReply, error) {
+func (auth *authGRPCServer) Generate2FA(ctx context.Context, req *pb.Generate2FARequest) (*pb.Generate2FAReply, error) {
 	img, err := auth.uc.Generate2FA(req.Email)
 	if err != nil {
 		return nil, err
@@ -75,7 +75,7 @@ func (auth *authGRPCServer) Generate2FA(ctx *context.Context, req *pb.Generate2F
 	}, err
 }
 
-func (auth *authGRPCServer) Setup2FA(ctx *context.Context, req *pb.Setup2FARequest) (*pb.Setup2FAReply, error) {
+func (auth *authGRPCServer) Setup2FA(ctx context.Context, req *pb.Setup2FARequest) (*pb.Setup2FAReply, error) {
 	ok, err := auth.uc.Setup2FA(req.Email, req.Code)
 	if err != nil {
 		return nil, err
@@ -85,7 +85,7 @@ func (auth *authGRPCServer) Setup2FA(ctx *context.Context, req *pb.Setup2FAReque
 	}, err
 }
 
-func (auth *authGRPCServer) Disable2FA(ctx *context.Context, req *pb.Disable2FARequest) (*pb.Disable2FAReply, error) {
+func (auth *authGRPCServer) Disable2FA(ctx context.Context, req *pb.Disable2FARequest) (*pb.Disable2FAReply, error) {
 	ok, err := auth.uc.Remove2FA(req.Email, req.Code)
 	if err != nil {
 		return nil, err
@@ -95,7 +95,7 @@ func (auth *authGRPCServer) Disable2FA(ctx *context.Context, req *pb.Disable2FAR
 	}, err
 }
 
-func (auth *authGRPCServer) Verify2FA(ctx *context.Context, req *pb.Verify2FARequest) (*pb.Verify2FAReply, error) {
+func (auth *authGRPCServer) Verify2FA(ctx context.Context, req *pb.Verify2FARequest) (*pb.Verify2FAReply, error) {
 	ok, err := auth.uc.Verify2FA(req.Email, req.Code)
 	if err != nil {
 		return nil, err
