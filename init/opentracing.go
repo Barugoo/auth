@@ -3,10 +3,10 @@ package init
 import (
 	"io"
 
-	"github.com/uber/jaeger-lib/metrics"
 	opentracing "github.com/opentracing/opentracing-go"
 	jaeger "github.com/uber/jaeger-client-go"
 	jaeger_config "github.com/uber/jaeger-client-go/config"
+	"github.com/uber/jaeger-lib/metrics"
 
 	"github.com/barugoo/oscillo-auth/config"
 )
@@ -23,7 +23,7 @@ func NewTracer(config *config.ServiceConfig) (opentracing.Tracer, io.Closer, err
 		},
 	}
 	return cfg.NewTracer(
-		jaeger_config.Logger(jaeger.StdLogger)
-		jaeger_config.Metrics(metrics.NullFactory)
+		jaeger_config.Logger(jaeger.StdLogger),
+		jaeger_config.Metrics(metrics.NullFactory),
 	)
 }
