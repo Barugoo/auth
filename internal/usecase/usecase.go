@@ -27,12 +27,12 @@ type AccountUsecase interface {
 }
 
 type accountUsecase struct {
-	service service.ServiceInterface
+	service service.AuthService
 	config  *config.ServiceConfig
 	db      repository.AccountRepository
 }
 
-func NewAccountUsecase(config *config.ServiceConfig, service service.ServiceInterface, db repository.AccountRepository) AccountUsecase {
+func NewAccountUsecase(config *config.ServiceConfig, service service.AuthService, db repository.AccountRepository) AccountUsecase {
 	return accountUsecase{
 		config:  config,
 		service: service,
@@ -100,7 +100,7 @@ func (uc *accountUsecase) UpdateCredentials(cred *models.Credentials) (bool, err
 	return true, err
 }
 
-func (uc accountUsecase) ActivateAccount(email string) (bool, error) {
+func (uc *accountUsecase) ActivateAccount(email string) (bool, error) {
 	account, err := uc.db.GetAccountByEmail(email)
 	if err != nil {
 		return false, err

@@ -17,13 +17,19 @@ func main() {
 		log.Fatal(err)
 	}
 
+	tracer, closer, err := init.NewTracer(cfg)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer closer.Close()
+	service := service.NewAuthService(tracer)
+
 	mgoClient, err := init.NewMongoClient(cfg.MongoURI)
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	db := repository.NewAccountRepository(mgoClient)
-	service := service.NewAuthService()
+
 	usecase := usecase.NewAccountUsecase(cfg, service, db)
 
 	grpcServer, err := init.NewGRPCServer(usecase)

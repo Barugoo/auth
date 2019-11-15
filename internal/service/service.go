@@ -1,12 +1,18 @@
 package service
 
+import (
+	opentracing "github.com/opentracing/opentracing-go"
+)
+
 type AuthService interface {
 	SetKV(key, value string) (bool, error)
 	GetKV(key string) (string, error)
+	GetTracer() opentracing.Tracer
 }
 
 type authService struct {
-	kv map[string]string
+	tracer opentracing.Tracer
+	kv     map[string]string
 }
 
 func (a *authService) SetKV(k, v string) (bool, error) {
@@ -18,8 +24,13 @@ func (a *authService) GetKV(k string) (string, error) {
 	return a.kv[k], nil
 }
 
-func NewAuthService() AuthService {
+func (a *authService) GetTracer() opentracing.Tracer {
+	return a.tracer
+}
+
+func NewAuthService(tracer opentracing.Tracer) AuthService {
 	return &authService{
-		kv: make(map[string]string),
+		tracer: tracer,
+		kv:     make(map[string]string),
 	}
 }

@@ -5,6 +5,7 @@ import (
 )
 
 type ServiceConfig struct {
+	ServiceName string `envconfig:"service_name"`
 	Issuer2FA   string `envconfig:"issuer_2fa"`
 	AppSecret   string `envconfig:"app_secret"`
 	AddressGRPC string `envconfig:"address_grpc"`
