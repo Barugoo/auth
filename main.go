@@ -8,6 +8,10 @@ import (
 	"github.com/barugoo/oscillo-auth/internal/app"
 )
 
+const (
+	authDB = "auth"
+)
+
 func main() {
 	cfg, err := config.NewConfig()
 	if err != nil {
@@ -19,7 +23,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	authApp, err := app.NewAuthApp(cfg, mgoClient.Database("auth"))
+	authApp, err := app.NewAuthApp(cfg, mgoClient.Database(authDB))
 	if err != nil {
 		log.Fatal(err)
 	}

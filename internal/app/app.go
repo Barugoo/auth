@@ -29,6 +29,10 @@ type authApp struct {
 	tracerCloser io.Closer
 }
 
+const (
+	accountCollection = "account"
+)
+
 func NewAuthApp(config *config.ServiceConfig, db *mongo.Database) (App, error) {
 
 	tracer, closer, err := tracer.NewTracer(config)
@@ -38,7 +42,7 @@ func NewAuthApp(config *config.ServiceConfig, db *mongo.Database) (App, error) {
 
 	service := service.NewAuthService(tracer)
 
-	accountRep := accountRepository.NewAccountRepository(db.Collection("account"))
+	accountRep := accountRepository.NewAccountRepository(db.Collection(accountCollection))
 	accountCase := accountUsecase.NewAccountUsecase(config, service, accountRep)
 	accountDelv := accountDelivery.NewAuthGRPCServer(accountCase)
 
