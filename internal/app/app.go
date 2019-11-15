@@ -24,7 +24,7 @@ type App interface {
 }
 
 type authApp struct {
-	server       *grpc.Server
+	grpcServer   *grpc.Server
 	config       *config.ServiceConfig
 	tracerCloser io.Closer
 }
@@ -47,7 +47,7 @@ func NewAuthApp(config *config.ServiceConfig, db *mongo.Database) (App, error) {
 
 	return &authApp{
 		tracerCloser: closer,
-		server:       grpcServ,
+		grpcServer:   grpcServ,
 		config:       config,
 	}, nil
 }
@@ -57,7 +57,7 @@ func (app *authApp) Run() error {
 	if err != nil {
 		return err
 	}
-	err = app.server.Serve(lis)
+	err = app.grpcServer.Serve(lis)
 	return err
 }
 
