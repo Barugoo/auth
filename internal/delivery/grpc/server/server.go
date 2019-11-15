@@ -41,7 +41,7 @@ func (auth *authGRPCServer) Login(ctx context.Context, req *pb.LoginRequest) (*p
 	}, err
 }
 
-func (auth *authGRPCServer) UpdateCredentials(ctx context.Context, req *pb.LoginRequest) (*pb.UpdateCredentialsReply, error) {
+func (auth *authGRPCServer) UpdateCredentials(ctx context.Context, req *pb.UpdateCredentialsRequest) (*pb.UpdateCredentialsReply, error) {
 	r := &models.Credentials{
 		Email:    req.Email,
 		Password: req.Password,
