@@ -6,15 +6,15 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 
-	"github.com/barugoo/oscillo-auth/internal/models"
+	"github.com/barugoo/oscillo-auth/internal/app/models"
 )
 
 type accountRepository struct {
 	db *mongo.Collection
 }
 
-func NewAccountRepository(client *mongo.Client) AccountRepository {
-	return &accountRepository{client.Database("auth").Collection("accounts")}
+func NewAccountRepository(collection *mongo.Collection) AccountRepository {
+	return &accountRepository{db: collection}
 }
 
 func (h *accountRepository) GetAccountByEmail(email string) (*models.Account, error) {

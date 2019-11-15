@@ -2,13 +2,10 @@ package main
 
 import (
 	"log"
-	"net"
 
 	"github.com/barugoo/oscillo-auth/config"
-	"github.com/barugoo/oscillo-auth/init"
-	"github.com/barugoo/oscillo-auth/internal/repository"
-	"github.com/barugoo/oscillo-auth/internal/service"
-	"github.com/barugoo/oscillo-auth/internal/usecase"
+	mongo "github.com/barugoo/oscillo-auth/init/mongo/client"
+	"github.com/barugoo/oscillo-auth/internal/app"
 )
 
 func main() {
@@ -17,25 +14,15 @@ func main() {
 		log.Fatal(err)
 	}
 
-	tracer, closer, err := init.NewTracer(cfg)
+	mgoClient, err := mongo.NewMongoClient(cfg)
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer closer.Close()
-	service := service.NewAuthService(tracer)
 
-	mgoClient, err := init.NewMongoClient(cfg)
+	authApp, err := app.NewAuthApp(cfg, mgoClient.Database("auth"))
 	if err != nil {
 		log.Fatal(err)
 	}
-	db := repository.NewAccountRepository(mgoClient)
 
-	usecase := usecase.NewAccountUsecase(cfg, service, db)
-
-	grpcServer := init.NewGRPCServer(usecase)
-	lis, err := net.Listen("tcp", cfg.AddressGRPC)
-	if err != nil {
-		log.Fatal(err)
-	}
-	grpcServer.Serve(lis)
+	authApp.Run()
 }

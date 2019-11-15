@@ -2,17 +2,20 @@ package usecase
 
 import (
 	"bytes"
-	"github.com/barugoo/oscillo-auth/internal/service"
+	"image/png"
+
 	"github.com/dgrijalva/jwt-go"
 	"github.com/pquerna/otp"
 	"github.com/pquerna/otp/totp"
 	"golang.org/x/crypto/bcrypt"
-	"image/png"
 
 	"github.com/barugoo/oscillo-auth/config"
-	"github.com/barugoo/oscillo-auth/internal/errors"
-	"github.com/barugoo/oscillo-auth/internal/models"
-	"github.com/barugoo/oscillo-auth/internal/repository"
+
+	"github.com/barugoo/oscillo-auth/internal/app/errors"
+	"github.com/barugoo/oscillo-auth/internal/app/models"
+	"github.com/barugoo/oscillo-auth/internal/app/service"
+
+	"github.com/barugoo/oscillo-auth/internal/app/account/repository"
 )
 
 type AccountUsecase interface {
@@ -27,16 +30,16 @@ type AccountUsecase interface {
 }
 
 type accountUsecase struct {
-	service service.AuthService
-	config  *config.ServiceConfig
-	db      repository.AccountRepository
+	service    service.AuthService
+	config     *config.ServiceConfig
+	repository repository.AccountRepository
 }
 
-func NewAccountUsecase(config *config.ServiceConfig, service service.AuthService, db repository.AccountRepository) AccountUsecase {
+func NewAccountUsecase(config *config.ServiceConfig, service service.AuthService, repository repository.AccountRepository) AccountUsecase {
 	return &accountUsecase{
-		config:  config,
-		service: service,
-		db:      db,
+		config:     config,
+		service:    service,
+		repository: repository,
 	}
 }
 
@@ -52,7 +55,7 @@ func (uc *accountUsecase) RegisterWithCredentials(cred *models.Credentials) (boo
 		IsActive:     false,
 	}
 
-	_, err = uc.db.CreateAccount(account)
+	_, err = uc.repository.CreateAccount(account)
 	if err != nil {
 		return false, err
 	}
@@ -65,7 +68,7 @@ func (uc *accountUsecase) AuthByCredentials(cred *models.Credentials) (string, e
 		return "", err
 	}
 
-	account, err := uc.db.GetAccountByEmail(cred.Email)
+	account, err := uc.repository.GetAccountByEmail(cred.Email)
 	if err != nil {
 		return "", err
 	}
@@ -87,13 +90,13 @@ func (uc *accountUsecase) UpdateCredentials(cred *models.Credentials) (bool, err
 		return false, err
 	}
 
-	account, err := uc.db.GetAccountByEmail(cred.Email)
+	account, err := uc.repository.GetAccountByEmail(cred.Email)
 	if err != nil {
 		return false, err
 	}
 	account.PasswordHash = hash
 
-	account, err = uc.db.UpdateAccount(account)
+	account, err = uc.repository.UpdateAccount(account)
 	if err != nil {
 		return false, err
 	}
@@ -101,14 +104,14 @@ func (uc *accountUsecase) UpdateCredentials(cred *models.Credentials) (bool, err
 }
 
 func (uc *accountUsecase) ActivateAccount(email string) (bool, error) {
-	account, err := uc.db.GetAccountByEmail(email)
+	account, err := uc.repository.GetAccountByEmail(email)
 	if err != nil {
 		return false, err
 	}
 
 	account.IsActive = true
 
-	_, err = uc.db.UpdateAccount(account)
+	_, err = uc.repository.UpdateAccount(account)
 	if err != nil {
 		return false, err
 	}
@@ -116,7 +119,7 @@ func (uc *accountUsecase) ActivateAccount(email string) (bool, error) {
 }
 
 func (uc *accountUsecase) Generate2FA(email string) ([]byte, error) {
-	account, err := uc.db.GetAccountByEmail(email)
+	account, err := uc.repository.GetAccountByEmail(email)
 	if err != nil {
 		return nil, err
 	}
@@ -141,7 +144,7 @@ func (uc *accountUsecase) Generate2FA(email string) ([]byte, error) {
 }
 
 func (uc *accountUsecase) Setup2FA(email, code string) (bool, error) {
-	account, err := uc.db.GetAccountByEmail(email)
+	account, err := uc.repository.GetAccountByEmail(email)
 	if err != nil {
 		return false, err
 	}
@@ -158,7 +161,7 @@ func (uc *accountUsecase) Setup2FA(email, code string) (bool, error) {
 
 	account.Secret2FA = secret
 
-	_, err = uc.db.UpdateAccount(account)
+	_, err = uc.repository.UpdateAccount(account)
 	if err != nil {
 		return false, err
 	}
@@ -167,7 +170,7 @@ func (uc *accountUsecase) Setup2FA(email, code string) (bool, error) {
 }
 
 func (uc *accountUsecase) Remove2FA(email, code string) (bool, error) {
-	account, err := uc.db.GetAccountByEmail(email)
+	account, err := uc.repository.GetAccountByEmail(email)
 	if err != nil {
 		return false, err
 	}
@@ -183,7 +186,7 @@ func (uc *accountUsecase) Remove2FA(email, code string) (bool, error) {
 
 	account.Secret2FA = ""
 
-	_, err = uc.db.UpdateAccount(account)
+	_, err = uc.repository.UpdateAccount(account)
 	if err != nil {
 		return false, err
 	}
@@ -191,7 +194,7 @@ func (uc *accountUsecase) Remove2FA(email, code string) (bool, error) {
 }
 
 func (uc *accountUsecase) Verify2FA(email, code string) (bool, error) {
-	account, err := uc.db.GetAccountByEmail(email)
+	account, err := uc.repository.GetAccountByEmail(email)
 	if err != nil {
 		return false, err
 	}
