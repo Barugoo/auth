@@ -29,7 +29,7 @@ func (h *accountRepository) GetAccountByEmail(ctx context.Context, email string)
 
 	account, err := h.getAccountByEmail(email)
 	if err != nil {
-		err = h.wrapError(err)
+		err = h.mapError(err)
 	}
 	return account, err
 }
@@ -49,7 +49,7 @@ func (h *accountRepository) CreateAccount(ctx context.Context, account *models.A
 
 	account, err := h.createAccount(account)
 	if err != nil {
-		err = h.wrapError(err)
+		err = h.mapError(err)
 	}
 	return account, err
 }
@@ -75,7 +75,7 @@ func (h *accountRepository) DeleteAccount(ctx context.Context, account *models.A
 
 	ok, err := h.deleteAccount(account)
 	if err != nil {
-		err = h.wrapError(err)
+		err = h.mapError(err)
 	}
 	return ok, err
 }
@@ -94,7 +94,7 @@ func (h *accountRepository) UpdateAccount(ctx context.Context, account *models.A
 
 	account, err := h.updateAccount(account)
 	if err != nil {
-		err = h.wrapError(err)
+		err = h.mapError(err)
 	}
 	return account, err
 }
@@ -107,11 +107,11 @@ func (h *accountRepository) updateAccount(account *models.Account) (*models.Acco
 	return account, nil
 }
 
-func (h *accountRepository) wrapError(err error) error {
+func (h *accountRepository) mapError(err error) error {
 	switch err {
 	case mongo.ErrNoDocuments:
 		return ErrAccountNotFound
 	default:
-		return fmt.Errorf("%v")
+		return fmt.Errorf("%v", err)
 	}
 }
