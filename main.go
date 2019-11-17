@@ -2,6 +2,9 @@ package main
 
 import (
 	"log"
+	"os"
+	"os/signal"
+	"syscall"
 
 	"github.com/barugoo/oscillo-auth/config"
 	"github.com/barugoo/oscillo-auth/init/mongo"
@@ -34,5 +37,17 @@ func main() {
 		log.Fatal(err)
 	}
 
-	authApp.Run()
+	stop := make(chan os.Signal)
+	signal.Notify(stop, syscall.SIGTERM, syscall.SIGINT)
+
+	go func() {
+		defer signal.Stop(stop)
+		<-stop
+		authApp.Shutdown()
+	}()
+
+	err = authApp.Run()
+	if err != nil {
+		log.Fatal(err)
+	}
 }

@@ -67,5 +67,6 @@ func (app *authApp) Run() error {
 }
 
 func (app *authApp) Shutdown() {
+	app.grpcServer.GracefulStop()
 	app.tracerCloser.Close()
 }
