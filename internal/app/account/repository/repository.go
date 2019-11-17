@@ -3,7 +3,7 @@ package repository
 import (
 	"context"
 
-	"github.com/barugoo/oscillo-auth/internal/app/models"
+	models "github.com/barugoo/oscillo-auth/internal/app/account"
 )
 
 type AccountRepository interface {

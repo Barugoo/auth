@@ -7,8 +7,8 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 
+	models "github.com/barugoo/oscillo-auth/internal/app/account"
 	"github.com/barugoo/oscillo-auth/internal/app/errors"
-	"github.com/barugoo/oscillo-auth/internal/app/models"
 	"github.com/barugoo/oscillo-auth/internal/app/service"
 )
 

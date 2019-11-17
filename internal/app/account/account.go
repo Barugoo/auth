@@ -1,4 +1,4 @@
-package models
+package account
 
 type Account struct {
 	ID           string `json:"id"`
@@ -10,4 +10,9 @@ type Account struct {
 
 func (a *Account) Has2FA() bool {
 	return len(a.Secret2FA) > 0
+}
+
+type Credentials struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
 }

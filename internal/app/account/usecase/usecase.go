@@ -14,7 +14,7 @@ import (
 
 	"github.com/barugoo/oscillo-auth/config"
 
-	"github.com/barugoo/oscillo-auth/internal/app/models"
+	models "github.com/barugoo/oscillo-auth/internal/app/account"
 	"github.com/barugoo/oscillo-auth/internal/app/service"
 
 	"github.com/barugoo/oscillo-auth/internal/app/account/repository"
