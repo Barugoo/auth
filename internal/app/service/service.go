@@ -7,7 +7,7 @@ import (
 type AuthService interface {
 	SetKV(key, value string) (bool, error)
 	GetKV(key string) (string, error)
-	GetTracer() opentracing.Tracer
+	StartSpan(ctx context.Context, name string) opentracing.Span
 }
 
 type authService struct {
@@ -24,8 +24,15 @@ func (a *authService) GetKV(k string) (string, error) {
 	return a.kv[k], nil
 }
 
-func (a *authService) GetTracer() opentracing.Tracer {
-	return a.tracer
+func (a *authService) StartSpan(ctx context.Context, name string) opentracing.Span {
+	span := opentracing.SpanFromContext(ctx)
+	if span != nil {
+		span = a.tracer.StartSpan(name, opentracing.ChildOf(span.Context()))
+	} else {
+		span = a.tracer.StartSpan(name)
+	}
+
+	return span
 }
 
 func NewAuthService(tracer opentracing.Tracer) AuthService {
