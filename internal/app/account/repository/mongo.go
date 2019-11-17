@@ -11,14 +11,14 @@ import (
 )
 
 type accountRepository struct {
-	service service.AuthService
-	db      *mongo.Collection
+	service    service.AuthService
+	collection *mongo.Collection
 }
 
 func NewAccountRepository(service service.AuthService, collection *mongo.Collection) AccountRepository {
 	return &accountRepository{
-		service: service,
-		db:      collection,
+		service:    service,
+		collection: collection,
 	}
 }
 
@@ -31,7 +31,7 @@ func (h *accountRepository) GetAccountByEmail(ctx context.Context, email string)
 
 func (h *accountRepository) getAccountByEmail(email string) (*models.Account, error) {
 	var account *models.Account
-	err := h.db.FindOne(context.TODO(), bson.D{{"email", email}}).Decode(&account)
+	err := h.collection.FindOne(context.TODO(), bson.D{{"email", email}}).Decode(&account)
 	if err != nil {
 		return nil, err
 	}
@@ -46,14 +46,14 @@ func (h *accountRepository) CreateAccount(ctx context.Context, account *models.A
 }
 
 func (h *accountRepository) createAccount(account *models.Account) (*models.Account, error) {
-	result, err := h.db.InsertOne(context.TODO(), account)
+	result, err := h.collection.InsertOne(context.TODO(), account)
 	if err != nil {
 		return nil, err
 	}
 
 	var acc *models.Account
 
-	err = h.db.FindOne(context.TODO(), bson.D{{"id", result.InsertedID}}).Decode(&acc)
+	err = h.collection.FindOne(context.TODO(), bson.D{{"id", result.InsertedID}}).Decode(&acc)
 	if err != nil {
 		return nil, err
 	}
@@ -68,7 +68,7 @@ func (h *accountRepository) DeleteAccount(ctx context.Context, account *models.A
 }
 
 func (h *accountRepository) deleteAccount(account *models.Account) (bool, error) {
-	_, err := h.db.DeleteOne(context.TODO(), bson.D{{"id", account.ID}})
+	_, err := h.collection.DeleteOne(context.TODO(), bson.D{{"id", account.ID}})
 	if err != nil {
 		return false, err
 	}
@@ -83,7 +83,7 @@ func (h *accountRepository) UpdateAccount(ctx context.Context, account *models.A
 }
 
 func (h *accountRepository) updateAccount(account *models.Account) (*models.Account, error) {
-	_, err := h.db.UpdateOne(context.TODO(), bson.D{{"id", account.ID}}, account)
+	_, err := h.collection.UpdateOne(context.TODO(), bson.D{{"id", account.ID}}, account)
 	if err != nil {
 		return nil, err
 	}
