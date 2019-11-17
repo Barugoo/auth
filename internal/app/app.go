@@ -4,6 +4,7 @@ import (
 	"io"
 	"net"
 
+	"github.com/go-redis/redis/v7"
 	"go.mongodb.org/mongo-driver/mongo"
 	"google.golang.org/grpc"
 
@@ -33,14 +34,14 @@ const (
 	accountCollection = "account"
 )
 
-func NewAuthApp(config *config.ServiceConfig, db *mongo.Database) (App, error) {
+func NewAuthApp(config *config.ServiceConfig, redis *redis.Client, db *mongo.Database) (App, error) {
 
 	tracer, closer, err := tracer.NewTracer(config)
 	if err != nil {
 		return nil, err
 	}
 
-	service := service.NewAuthService(tracer)
+	service := service.NewAuthService(redis, tracer)
 
 	accountRep := accountRepository.NewAccountRepository(service, db.Collection(accountCollection))
 	accountCase := accountUsecase.NewAccountUsecase(config, service, accountRep)
@@ -57,7 +58,7 @@ func NewAuthApp(config *config.ServiceConfig, db *mongo.Database) (App, error) {
 }
 
 func (app *authApp) Run() error {
-	lis, err := net.Listen("tcp", app.config.AddressGRPC)
+	lis, err := net.Listen("tcp", app.config.GRPCAddr)
 	if err != nil {
 		return err
 	}

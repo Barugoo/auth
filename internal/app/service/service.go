@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 
+	"github.com/go-redis/redis/v7"
 	opentracing "github.com/opentracing/opentracing-go"
 )
 
@@ -15,8 +16,9 @@ type AuthService interface {
 }
 
 type authService struct {
-	tracer opentracing.Tracer
-	kv     map[string]string
+	redisClient *redis.Client
+	tracer      opentracing.Tracer
+	kv          map[string]string
 }
 
 func (a *authService) SetKV(ctx context.Context, key, value string) (bool, error) {
@@ -26,8 +28,18 @@ func (a *authService) SetKV(ctx context.Context, key, value string) (bool, error
 	return a.setKV(key, value)
 }
 
-func (a *authService) setKV(k, v string) (bool, error) {
-	a.kv[k] = v
+func (a *authService) setKV(key, value string) (bool, error) {
+	err := a.redisClient.Set(key, value, 0).Err()
+	if err != nil {
+		return false, err
+	}
+	val, err := a.redisClient.Get(key).Result()
+	if err != nil {
+		return false, err
+	}
+	if val != value {
+		return false, err
+	}
 	return true, nil
 }
 
@@ -39,7 +51,11 @@ func (a *authService) GetKV(ctx context.Context, key string) (string, error) {
 }
 
 func (a *authService) getKV(key string) (string, error) {
-	return a.kv[key], nil
+	val, err := a.redisClient.Get(key).Result()
+	if err != nil {
+		return "", err
+	}
+	return val, nil
 }
 
 func (a *authService) StartSpan(ctx context.Context, name string) opentracing.Span {
@@ -57,9 +73,10 @@ func (a *authService) ContextWithSpan(ctx context.Context, span opentracing.Span
 	return opentracing.ContextWithSpan(ctx, span)
 }
 
-func NewAuthService(tracer opentracing.Tracer) AuthService {
+func NewAuthService(redisClient *redis.Client, tracer opentracing.Tracer) AuthService {
 	return &authService{
-		tracer: tracer,
-		kv:     make(map[string]string),
+		redisClient: redisClient,
+		tracer:      tracer,
+		kv:          make(map[string]string),
 	}
 }

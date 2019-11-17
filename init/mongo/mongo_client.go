@@ -1,4 +1,4 @@
-package client
+package mongo
 
 import (
 	"context"
@@ -10,20 +10,17 @@ import (
 )
 
 func NewMongoClient(config *config.ServiceConfig) (*mongo.Client, error) {
-	client, err := mongo.NewClient(options.Client().ApplyURI(config.MongoURI))
+	client, err := mongo.NewClient(options.Client().ApplyURI(config.MongoAddr))
 	if err != nil {
 		return nil, err
 	}
-
 	err = client.Connect(context.TODO())
 	if err != nil {
 		return nil, err
 	}
-
 	err = client.Ping(context.TODO(), nil)
 	if err != nil {
 		return nil, err
 	}
-
 	return client, nil
 }
