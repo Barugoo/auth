@@ -42,9 +42,9 @@ func NewAuthApp(config *config.ServiceConfig, db *mongo.Database) (App, error) {
 
 	service := service.NewAuthService(tracer)
 
-	accountRep := accountRepository.NewAccountRepository(db.Collection(accountCollection))
+	accountRep := accountRepository.NewAccountRepository(service, db.Collection(accountCollection))
 	accountCase := accountUsecase.NewAccountUsecase(config, service, accountRep)
-	accountDelv := accountDelivery.NewAuthGRPCServer(accountCase)
+	accountDelv := accountDelivery.NewAuthGRPCServer(service, accountCase)
 
 	grpcServ := grpc.NewServer()
 	api.RegisterAuthServer(grpcServ, accountDelv)

@@ -18,8 +18,8 @@ type authGRPCServer struct {
 
 func NewAuthGRPCServer(service service.AuthService, accountUsecase usecase.AccountUsecase) pb.AuthServer {
 	return &authGRPCServer{
-		service:        service,
-		accountUsecase: accountUsecase,
+		service:     service,
+		accountCase: accountUsecase,
 	}
 }
 
@@ -27,11 +27,17 @@ func (auth *authGRPCServer) Register(ctx context.Context, req *pb.RegisterReques
 	span := auth.service.StartSpan(ctx, "Register")
 	defer span.Finish()
 
+	ctx = auth.service.ContextWithSpan(context.Background(), span)
+
+	return auth.register(ctx, req)
+}
+
+func (auth *authGRPCServer) register(ctx context.Context, req *pb.RegisterRequest) (*pb.RegisterReply, error) {
 	r := &models.Credentials{
 		Email:    req.Email,
 		Password: req.Password,
 	}
-	ok, err := auth.accountCase.RegisterWithCredentials(r)
+	ok, err := auth.accountCase.RegisterWithCredentials(ctx, r)
 	if err != nil {
 		return nil, err
 	}
@@ -44,11 +50,17 @@ func (auth *authGRPCServer) Login(ctx context.Context, req *pb.LoginRequest) (*p
 	span := auth.service.StartSpan(ctx, "Login")
 	defer span.Finish()
 
+	ctx = auth.service.ContextWithSpan(context.Background(), span)
+
+	return auth.login(ctx, req)
+}
+
+func (auth *authGRPCServer) login(ctx context.Context, req *pb.LoginRequest) (*pb.LoginReply, error) {
 	r := &models.Credentials{
 		Email:    req.Email,
 		Password: req.Password,
 	}
-	token, err := auth.accountCase.AuthByCredentials(r)
+	token, err := auth.accountCase.AuthByCredentials(ctx, r)
 	if err != nil {
 		return nil, err
 	}
@@ -61,11 +73,17 @@ func (auth *authGRPCServer) UpdateCredentials(ctx context.Context, req *pb.Updat
 	span := auth.service.StartSpan(ctx, "UpdateCredentials")
 	defer span.Finish()
 
+	ctx = auth.service.ContextWithSpan(context.Background(), span)
+
+	return auth.updateCredentials(ctx, req)
+}
+
+func (auth *authGRPCServer) updateCredentials(ctx context.Context, req *pb.UpdateCredentialsRequest) (*pb.UpdateCredentialsReply, error) {
 	r := &models.Credentials{
 		Email:    req.Email,
 		Password: req.Password,
 	}
-	ok, err := auth.accountCase.UpdateCredentials(r)
+	ok, err := auth.accountCase.UpdateCredentials(ctx, r)
 	if err != nil {
 		return nil, err
 	}
@@ -75,10 +93,16 @@ func (auth *authGRPCServer) UpdateCredentials(ctx context.Context, req *pb.Updat
 }
 
 func (auth *authGRPCServer) ActivateAccount(ctx context.Context, req *pb.ActivateAccountRequest) (*pb.ActivateAccountReply, error) {
-	span := auth.service.StartSpan(ctx, "ActivateAccount")
+	span := auth.service.StartSpan(ctx, "UpdateCredentials")
 	defer span.Finish()
 
-	ok, err := auth.accountCase.ActivateAccount(req.Email)
+	ctx = auth.service.ContextWithSpan(context.Background(), span)
+
+	return auth.activateAccount(ctx, req)
+}
+
+func (auth *authGRPCServer) activateAccount(ctx context.Context, req *pb.ActivateAccountRequest) (*pb.ActivateAccountReply, error) {
+	ok, err := auth.accountCase.ActivateAccount(ctx, req.Email)
 	if err != nil {
 		return nil, err
 	}
@@ -91,7 +115,13 @@ func (auth *authGRPCServer) Generate2FA(ctx context.Context, req *pb.Generate2FA
 	span := auth.service.StartSpan(ctx, "Generate2FA")
 	defer span.Finish()
 
-	img, err := auth.accountCase.Generate2FA(req.Email)
+	ctx = auth.service.ContextWithSpan(context.Background(), span)
+
+	return auth.generate2FA(ctx, req)
+}
+
+func (auth *authGRPCServer) generate2FA(ctx context.Context, req *pb.Generate2FARequest) (*pb.Generate2FAReply, error) {
+	img, err := auth.accountCase.Generate2FA(ctx, req.Email)
 	if err != nil {
 		return nil, err
 	}
@@ -104,7 +134,13 @@ func (auth *authGRPCServer) Setup2FA(ctx context.Context, req *pb.Setup2FAReques
 	span := auth.service.StartSpan(ctx, "Setup2FA")
 	defer span.Finish()
 
-	ok, err := auth.accountCase.Setup2FA(req.Email, req.Code)
+	ctx = auth.service.ContextWithSpan(context.Background(), span)
+
+	return auth.setup2FA(ctx, req)
+}
+
+func (auth *authGRPCServer) setup2FA(ctx context.Context, req *pb.Setup2FARequest) (*pb.Setup2FAReply, error) {
+	ok, err := auth.accountCase.Setup2FA(ctx, req.Email, req.Code)
 	if err != nil {
 		return nil, err
 	}
@@ -117,7 +153,13 @@ func (auth *authGRPCServer) Disable2FA(ctx context.Context, req *pb.Disable2FARe
 	span := auth.service.StartSpan(ctx, "Disable2FA")
 	defer span.Finish()
 
-	ok, err := auth.accountCase.Remove2FA(req.Email, req.Code)
+	ctx = auth.service.ContextWithSpan(context.Background(), span)
+
+	return auth.disable2FA(ctx, req)
+}
+
+func (auth *authGRPCServer) disable2FA(ctx context.Context, req *pb.Disable2FARequest) (*pb.Disable2FAReply, error) {
+	ok, err := auth.accountCase.Remove2FA(ctx, req.Email, req.Code)
 	if err != nil {
 		return nil, err
 	}
@@ -130,7 +172,13 @@ func (auth *authGRPCServer) Verify2FA(ctx context.Context, req *pb.Verify2FARequ
 	span := auth.service.StartSpan(ctx, "Verify2FA")
 	defer span.Finish()
 
-	ok, err := auth.accountCase.Verify2FA(req.Email, req.Code)
+	ctx = auth.service.ContextWithSpan(context.Background(), span)
+
+	return auth.verify2FA(ctx, req)
+}
+
+func (auth *authGRPCServer) verify2FA(ctx context.Context, req *pb.Verify2FARequest) (*pb.Verify2FAReply, error) {
+	ok, err := auth.accountCase.Verify2FA(ctx, req.Email, req.Code)
 	if err != nil {
 		return nil, err
 	}

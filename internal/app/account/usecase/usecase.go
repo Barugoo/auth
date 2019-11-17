@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"bytes"
+	"context"
 	"image/png"
 
 	"github.com/dgrijalva/jwt-go"
@@ -19,14 +20,14 @@ import (
 )
 
 type AccountUsecase interface {
-	RegisterWithCredentials(cred *models.Credentials) (bool, error)
-	AuthByCredentials(cred *models.Credentials) (string, error)
-	UpdateCredentials(cred *models.Credentials) (bool, error)
-	ActivateAccount(email string) (bool, error)
-	Generate2FA(email string) ([]byte, error)
-	Setup2FA(email, code string) (bool, error)
-	Remove2FA(email, code string) (bool, error)
-	Verify2FA(email, code string) (bool, error)
+	RegisterWithCredentials(ctx context.Context, cred *models.Credentials) (bool, error)
+	AuthByCredentials(ctx context.Context, cred *models.Credentials) (string, error)
+	UpdateCredentials(ctx context.Context, cred *models.Credentials) (bool, error)
+	ActivateAccount(ctx context.Context, email string) (bool, error)
+	Generate2FA(ctx context.Context, email string) ([]byte, error)
+	Setup2FA(ctx context.Context, email, code string) (bool, error)
+	Remove2FA(ctx context.Context, email, code string) (bool, error)
+	Verify2FA(ctx context.Context, email, code string) (bool, error)
 }
 
 type accountUsecase struct {
@@ -43,7 +44,16 @@ func NewAccountUsecase(config *config.ServiceConfig, service service.AuthService
 	}
 }
 
-func (uc *accountUsecase) RegisterWithCredentials(cred *models.Credentials) (bool, error) {
+func (uc *accountUsecase) RegisterWithCredentials(ctx context.Context, cred *models.Credentials) (bool, error) {
+	span := uc.service.StartSpan(ctx, "RegisterWithCredentials")
+	defer span.Finish()
+
+	ctx = uc.service.ContextWithSpan(context.Background(), span)
+
+	return uc.registerWithCredentials(ctx, cred)
+}
+
+func (uc *accountUsecase) registerWithCredentials(ctx context.Context, cred *models.Credentials) (bool, error) {
 	hash, err := uc.hash(cred.Password)
 	if err != nil {
 		return false, err
@@ -55,20 +65,29 @@ func (uc *accountUsecase) RegisterWithCredentials(cred *models.Credentials) (boo
 		IsActive:     false,
 	}
 
-	_, err = uc.repository.CreateAccount(account)
+	_, err = uc.repository.CreateAccount(ctx, account)
 	if err != nil {
 		return false, err
 	}
 	return true, err
 }
 
-func (uc *accountUsecase) AuthByCredentials(cred *models.Credentials) (string, error) {
+func (uc *accountUsecase) AuthByCredentials(ctx context.Context, cred *models.Credentials) (string, error) {
+	span := uc.service.StartSpan(ctx, "AuthByCredentials")
+	defer span.Finish()
+
+	ctx = uc.service.ContextWithSpan(context.Background(), span)
+
+	return uc.authByCredentials(ctx, cred)
+}
+
+func (uc *accountUsecase) authByCredentials(ctx context.Context, cred *models.Credentials) (string, error) {
 	hash, err := uc.hash(cred.Password)
 	if err != nil {
 		return "", err
 	}
 
-	account, err := uc.repository.GetAccountByEmail(cred.Email)
+	account, err := uc.repository.GetAccountByEmail(ctx, cred.Email)
 	if err != nil {
 		return "", err
 	}
@@ -84,42 +103,69 @@ func (uc *accountUsecase) AuthByCredentials(cred *models.Credentials) (string, e
 	return uc.makeAccountToken(account)
 }
 
-func (uc *accountUsecase) UpdateCredentials(cred *models.Credentials) (bool, error) {
+func (uc *accountUsecase) UpdateCredentials(ctx context.Context, cred *models.Credentials) (bool, error) {
+	span := uc.service.StartSpan(ctx, "UpdateCredentials")
+	defer span.Finish()
+
+	ctx = uc.service.ContextWithSpan(context.Background(), span)
+
+	return uc.updateCredentials(ctx, cred)
+}
+
+func (uc *accountUsecase) updateCredentials(ctx context.Context, cred *models.Credentials) (bool, error) {
 	hash, err := uc.hash(cred.Password)
 	if err != nil {
 		return false, err
 	}
 
-	account, err := uc.repository.GetAccountByEmail(cred.Email)
+	account, err := uc.repository.GetAccountByEmail(ctx, cred.Email)
 	if err != nil {
 		return false, err
 	}
 	account.PasswordHash = hash
 
-	account, err = uc.repository.UpdateAccount(account)
+	account, err = uc.repository.UpdateAccount(ctx, account)
 	if err != nil {
 		return false, err
 	}
 	return true, err
 }
 
-func (uc *accountUsecase) ActivateAccount(email string) (bool, error) {
-	account, err := uc.repository.GetAccountByEmail(email)
+func (uc *accountUsecase) ActivateAccount(ctx context.Context, email string) (bool, error) {
+	span := uc.service.StartSpan(ctx, "ActivateAccount")
+	defer span.Finish()
+
+	ctx = uc.service.ContextWithSpan(context.Background(), span)
+
+	return uc.activateAccount(ctx, email)
+}
+
+func (uc *accountUsecase) activateAccount(ctx context.Context, email string) (bool, error) {
+	account, err := uc.repository.GetAccountByEmail(ctx, email)
 	if err != nil {
 		return false, err
 	}
 
 	account.IsActive = true
 
-	_, err = uc.repository.UpdateAccount(account)
+	_, err = uc.repository.UpdateAccount(ctx, account)
 	if err != nil {
 		return false, err
 	}
 	return true, nil
 }
 
-func (uc *accountUsecase) Generate2FA(email string) ([]byte, error) {
-	account, err := uc.repository.GetAccountByEmail(email)
+func (uc *accountUsecase) Generate2FA(ctx context.Context, email string) ([]byte, error) {
+	span := uc.service.StartSpan(ctx, "Generate2FA")
+	defer span.Finish()
+
+	ctx = uc.service.ContextWithSpan(context.Background(), span)
+
+	return uc.generate2FA(ctx, email)
+}
+
+func (uc *accountUsecase) generate2FA(ctx context.Context, email string) ([]byte, error) {
+	account, err := uc.repository.GetAccountByEmail(ctx, email)
 	if err != nil {
 		return nil, err
 	}
@@ -132,7 +178,7 @@ func (uc *accountUsecase) Generate2FA(email string) ([]byte, error) {
 		return nil, err
 	}
 
-	ok, err := uc.service.SetKV(account.ID, key.Secret())
+	ok, err := uc.service.SetKV(ctx, account.ID, key.Secret())
 	if err != nil {
 		return nil, err
 	}
@@ -143,13 +189,22 @@ func (uc *accountUsecase) Generate2FA(email string) ([]byte, error) {
 	return uc.genQRCode(key)
 }
 
-func (uc *accountUsecase) Setup2FA(email, code string) (bool, error) {
-	account, err := uc.repository.GetAccountByEmail(email)
+func (uc *accountUsecase) Setup2FA(ctx context.Context, email, code string) (bool, error) {
+	span := uc.service.StartSpan(ctx, "Setup2FA")
+	defer span.Finish()
+
+	ctx = uc.service.ContextWithSpan(context.Background(), span)
+
+	return uc.setup2FA(ctx, email, code)
+}
+
+func (uc *accountUsecase) setup2FA(ctx context.Context, email, code string) (bool, error) {
+	account, err := uc.repository.GetAccountByEmail(ctx, email)
 	if err != nil {
 		return false, err
 	}
 
-	secret, err := uc.service.GetKV(account.ID)
+	secret, err := uc.service.GetKV(ctx, account.ID)
 	if err != nil {
 		return true, err
 	}
@@ -161,7 +216,7 @@ func (uc *accountUsecase) Setup2FA(email, code string) (bool, error) {
 
 	account.Secret2FA = secret
 
-	_, err = uc.repository.UpdateAccount(account)
+	_, err = uc.repository.UpdateAccount(ctx, account)
 	if err != nil {
 		return false, err
 	}
@@ -169,8 +224,17 @@ func (uc *accountUsecase) Setup2FA(email, code string) (bool, error) {
 	return valid, nil
 }
 
-func (uc *accountUsecase) Remove2FA(email, code string) (bool, error) {
-	account, err := uc.repository.GetAccountByEmail(email)
+func (uc *accountUsecase) Remove2FA(ctx context.Context, email, code string) (bool, error) {
+	span := uc.service.StartSpan(ctx, "Remove2FA")
+	defer span.Finish()
+
+	ctx = uc.service.ContextWithSpan(context.Background(), span)
+
+	return uc.remove2FA(ctx, email, code)
+}
+
+func (uc *accountUsecase) remove2FA(ctx context.Context, email, code string) (bool, error) {
+	account, err := uc.repository.GetAccountByEmail(ctx, email)
 	if err != nil {
 		return false, err
 	}
@@ -186,15 +250,24 @@ func (uc *accountUsecase) Remove2FA(email, code string) (bool, error) {
 
 	account.Secret2FA = ""
 
-	_, err = uc.repository.UpdateAccount(account)
+	_, err = uc.repository.UpdateAccount(ctx, account)
 	if err != nil {
 		return false, err
 	}
 	return valid, nil
 }
 
-func (uc *accountUsecase) Verify2FA(email, code string) (bool, error) {
-	account, err := uc.repository.GetAccountByEmail(email)
+func (uc *accountUsecase) Verify2FA(ctx context.Context, email, code string) (bool, error) {
+	span := uc.service.StartSpan(ctx, "Verify2FA")
+	defer span.Finish()
+
+	ctx = uc.service.ContextWithSpan(context.Background(), span)
+
+	return uc.verify2FA(ctx, email, code)
+}
+
+func (uc *accountUsecase) verify2FA(ctx context.Context, email, code string) (bool, error) {
+	account, err := uc.repository.GetAccountByEmail(ctx, email)
 	if err != nil {
 		return false, err
 	}
