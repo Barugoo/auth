@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"fmt"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -26,7 +27,11 @@ func (h *accountRepository) GetAccountByEmail(ctx context.Context, email string)
 	span := h.service.StartSpan(ctx, "GetAccountByEmail")
 	defer span.Finish()
 
-	return h.getAccountByEmail(email)
+	account, err := h.getAccountByEmail(email)
+	if err != nil {
+		err = h.wrapError(err)
+	}
+	return account, err
 }
 
 func (h *accountRepository) getAccountByEmail(email string) (*models.Account, error) {
@@ -42,7 +47,11 @@ func (h *accountRepository) CreateAccount(ctx context.Context, account *models.A
 	span := h.service.StartSpan(ctx, "CreateAccount")
 	defer span.Finish()
 
-	return h.createAccount(account)
+	account, err := h.createAccount(account)
+	if err != nil {
+		err = h.wrapError(err)
+	}
+	return account, err
 }
 
 func (h *accountRepository) createAccount(account *models.Account) (*models.Account, error) {
@@ -64,7 +73,11 @@ func (h *accountRepository) DeleteAccount(ctx context.Context, account *models.A
 	span := h.service.StartSpan(ctx, "DeleteAccount")
 	defer span.Finish()
 
-	return h.deleteAccount(account)
+	ok, err := h.deleteAccount(account)
+	if err != nil {
+		err = h.wrapError(err)
+	}
+	return ok, err
 }
 
 func (h *accountRepository) deleteAccount(account *models.Account) (bool, error) {
@@ -79,7 +92,11 @@ func (h *accountRepository) UpdateAccount(ctx context.Context, account *models.A
 	span := h.service.StartSpan(ctx, "UpdateAccount")
 	defer span.Finish()
 
-	return h.updateAccount(account)
+	account, err := h.updateAccount(account)
+	if err != nil {
+		err = h.wrapError(err)
+	}
+	return account, err
 }
 
 func (h *accountRepository) updateAccount(account *models.Account) (*models.Account, error) {
@@ -88,4 +105,13 @@ func (h *accountRepository) updateAccount(account *models.Account) (*models.Acco
 		return nil, err
 	}
 	return account, nil
+}
+
+func (h *accountRepository) wrapError(err error) error {
+	switch err {
+	case mongo.ErrNoDocuments:
+		return ErrAccountNotFound
+	default:
+		return fmt.Errorf("%v")
+	}
 }
