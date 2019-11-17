@@ -12,7 +12,6 @@ import (
 
 	"github.com/barugoo/oscillo-auth/config"
 
-	"github.com/barugoo/oscillo-auth/internal/app/errors"
 	"github.com/barugoo/oscillo-auth/internal/app/models"
 	"github.com/barugoo/oscillo-auth/internal/app/service"
 
@@ -93,11 +92,11 @@ func (uc *accountUsecase) authByCredentials(ctx context.Context, cred *models.Cr
 	}
 
 	if !account.IsActive {
-		return "", errors.ErrInactiveAccount
+		return "", ErrInactiveAccount
 	}
 
 	if account.PasswordHash != hash {
-		return "", errors.ErrWrongPassword
+		return "", ErrWrongPassword
 	}
 
 	return uc.makeAccountToken(account)
@@ -183,7 +182,7 @@ func (uc *accountUsecase) generate2FA(ctx context.Context, email string) ([]byte
 		return nil, err
 	}
 	if !ok {
-		return nil, errors.ErrUnableToStoreKey
+		return nil, ErrUnableToStoreKey
 	}
 
 	return uc.genQRCode(key)
@@ -211,7 +210,7 @@ func (uc *accountUsecase) setup2FA(ctx context.Context, email, code string) (boo
 
 	valid := totp.Validate(code, secret)
 	if !valid {
-		return false, errors.ErrInvalid2FACode
+		return false, ErrInvalid2FACode
 	}
 
 	account.Secret2FA = secret
@@ -240,12 +239,12 @@ func (uc *accountUsecase) remove2FA(ctx context.Context, email, code string) (bo
 	}
 
 	if !account.Has2FA() {
-		return false, errors.Err2FADisabled
+		return false, Err2FADisabled
 	}
 
 	valid := totp.Validate(code, account.Secret2FA)
 	if !valid {
-		return false, errors.ErrInvalid2FACode
+		return false, ErrInvalid2FACode
 	}
 
 	account.Secret2FA = ""
@@ -273,12 +272,12 @@ func (uc *accountUsecase) verify2FA(ctx context.Context, email, code string) (bo
 	}
 
 	if !account.Has2FA() {
-		return false, errors.Err2FADisabled
+		return false, Err2FADisabled
 	}
 
 	valid := totp.Validate(code, account.Secret2FA)
 	if !valid {
-		return false, errors.ErrInvalid2FACode
+		return false, ErrInvalid2FACode
 	}
 	return valid, nil
 }

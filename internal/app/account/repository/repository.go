@@ -2,13 +2,8 @@ package repository
 
 import (
 	"context"
-	"errors"
 
 	"github.com/barugoo/oscillo-auth/internal/app/models"
-)
-
-var (
-	ErrAccountNotFound = errors.New("account not found")
 )
 
 type AccountRepository interface {
