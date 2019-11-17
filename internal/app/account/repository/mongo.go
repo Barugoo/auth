@@ -7,8 +7,13 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 
+	"github.com/barugoo/oscillo-auth/internal/app/errors"
 	"github.com/barugoo/oscillo-auth/internal/app/models"
 	"github.com/barugoo/oscillo-auth/internal/app/service"
+)
+
+const (
+	mongoDB = "mongoDB"
 )
 
 type accountRepository struct {
@@ -29,7 +34,7 @@ func (h *accountRepository) GetAccountByEmail(ctx context.Context, email string)
 
 	account, err := h.getAccountByEmail(email)
 	if err != nil {
-		err = h.mapError(err)
+		err = h.wrapError(err)
 	}
 	return account, err
 }
@@ -49,7 +54,7 @@ func (h *accountRepository) CreateAccount(ctx context.Context, account *models.A
 
 	account, err := h.createAccount(account)
 	if err != nil {
-		err = h.mapError(err)
+		err = h.wrapError(err)
 	}
 	return account, err
 }
@@ -75,7 +80,7 @@ func (h *accountRepository) DeleteAccount(ctx context.Context, account *models.A
 
 	ok, err := h.deleteAccount(account)
 	if err != nil {
-		err = h.mapError(err)
+		err = h.wrapError(err)
 	}
 	return ok, err
 }
@@ -94,7 +99,7 @@ func (h *accountRepository) UpdateAccount(ctx context.Context, account *models.A
 
 	account, err := h.updateAccount(account)
 	if err != nil {
-		err = h.mapError(err)
+		err = h.wrapError(err)
 	}
 	return account, err
 }
@@ -107,11 +112,16 @@ func (h *accountRepository) updateAccount(account *models.Account) (*models.Acco
 	return account, nil
 }
 
-func (h *accountRepository) mapError(err error) error {
+func (h *accountRepository) wrapError(err error) error {
+
 	switch err {
 	case mongo.ErrNoDocuments:
-		return ErrAccountNotFound
+		err = errors.ErrNotFound
 	default:
-		return fmt.Errorf("%v", err)
+		err = fmt.Errorf("%v", err)
+	}
+	return &errors.RepositoryError{
+		Impl: mongoDB,
+		Err:  err,
 	}
 }

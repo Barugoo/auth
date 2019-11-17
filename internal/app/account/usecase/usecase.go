@@ -3,6 +3,8 @@ package usecase
 import (
 	"bytes"
 	"context"
+	"fmt"
+	"github.com/barugoo/oscillo-auth/internal/app/errors"
 	"image/png"
 
 	"github.com/dgrijalva/jwt-go"
@@ -29,6 +31,10 @@ type AccountUsecase interface {
 	Verify2FA(ctx context.Context, email, code string) (bool, error)
 }
 
+const (
+	usecaseMethodTemplate = "%s/usecase"
+)
+
 type accountUsecase struct {
 	service    service.AuthService
 	config     *config.ServiceConfig
@@ -44,12 +50,18 @@ func NewAccountUsecase(config *config.ServiceConfig, service service.AuthService
 }
 
 func (uc *accountUsecase) RegisterWithCredentials(ctx context.Context, cred *models.Credentials) (bool, error) {
-	span := uc.service.StartSpan(ctx, "RegisterWithCredentials")
+	methodName := uc.getMethodFromContext(ctx)
+
+	span := uc.service.StartSpan(ctx, methodName)
 	defer span.Finish()
 
 	ctx = uc.service.ContextWithSpan(context.Background(), span)
 
-	return uc.registerWithCredentials(ctx, cred)
+	ok, err := uc.registerWithCredentials(ctx, cred)
+	if err != nil {
+		err = uc.wrapError(err, methodName)
+	}
+	return ok, err
 }
 
 func (uc *accountUsecase) registerWithCredentials(ctx context.Context, cred *models.Credentials) (bool, error) {
@@ -72,12 +84,18 @@ func (uc *accountUsecase) registerWithCredentials(ctx context.Context, cred *mod
 }
 
 func (uc *accountUsecase) AuthByCredentials(ctx context.Context, cred *models.Credentials) (string, error) {
-	span := uc.service.StartSpan(ctx, "AuthByCredentials")
+	methodName := uc.getMethodFromContext(ctx)
+
+	span := uc.service.StartSpan(ctx, methodName)
 	defer span.Finish()
 
 	ctx = uc.service.ContextWithSpan(context.Background(), span)
 
-	return uc.authByCredentials(ctx, cred)
+	ok, err := uc.authByCredentials(ctx, cred)
+	if err != nil {
+		err = uc.wrapError(err, methodName)
+	}
+	return ok, err
 }
 
 func (uc *accountUsecase) authByCredentials(ctx context.Context, cred *models.Credentials) (string, error) {
@@ -92,23 +110,29 @@ func (uc *accountUsecase) authByCredentials(ctx context.Context, cred *models.Cr
 	}
 
 	if !account.IsActive {
-		return "", ErrInactiveAccount
+		return "", errors.ErrInactiveAccount
 	}
 
 	if account.PasswordHash != hash {
-		return "", ErrWrongPassword
+		return "", errors.ErrWrongPassword
 	}
 
 	return uc.makeAccountToken(account)
 }
 
 func (uc *accountUsecase) UpdateCredentials(ctx context.Context, cred *models.Credentials) (bool, error) {
-	span := uc.service.StartSpan(ctx, "UpdateCredentials")
+	methodName := uc.getMethodFromContext(ctx)
+
+	span := uc.service.StartSpan(ctx, methodName)
 	defer span.Finish()
 
 	ctx = uc.service.ContextWithSpan(context.Background(), span)
 
-	return uc.updateCredentials(ctx, cred)
+	ok, err := uc.updateCredentials(ctx, cred)
+	if err != nil {
+		err = uc.wrapError(err, methodName)
+	}
+	return ok, err
 }
 
 func (uc *accountUsecase) updateCredentials(ctx context.Context, cred *models.Credentials) (bool, error) {
@@ -131,12 +155,18 @@ func (uc *accountUsecase) updateCredentials(ctx context.Context, cred *models.Cr
 }
 
 func (uc *accountUsecase) ActivateAccount(ctx context.Context, email string) (bool, error) {
-	span := uc.service.StartSpan(ctx, "ActivateAccount")
+	methodName := uc.getMethodFromContext(ctx)
+
+	span := uc.service.StartSpan(ctx, methodName)
 	defer span.Finish()
 
 	ctx = uc.service.ContextWithSpan(context.Background(), span)
 
-	return uc.activateAccount(ctx, email)
+	ok, err := uc.activateAccount(ctx, email)
+	if err != nil {
+		err = uc.wrapError(err, methodName)
+	}
+	return ok, err
 }
 
 func (uc *accountUsecase) activateAccount(ctx context.Context, email string) (bool, error) {
@@ -155,12 +185,18 @@ func (uc *accountUsecase) activateAccount(ctx context.Context, email string) (bo
 }
 
 func (uc *accountUsecase) Generate2FA(ctx context.Context, email string) ([]byte, error) {
-	span := uc.service.StartSpan(ctx, "Generate2FA")
+	methodName := uc.getMethodFromContext(ctx)
+
+	span := uc.service.StartSpan(ctx, methodName)
 	defer span.Finish()
 
 	ctx = uc.service.ContextWithSpan(context.Background(), span)
 
-	return uc.generate2FA(ctx, email)
+	ok, err := uc.generate2FA(ctx, email)
+	if err != nil {
+		err = uc.wrapError(err, methodName)
+	}
+	return ok, err
 }
 
 func (uc *accountUsecase) generate2FA(ctx context.Context, email string) ([]byte, error) {
@@ -182,19 +218,25 @@ func (uc *accountUsecase) generate2FA(ctx context.Context, email string) ([]byte
 		return nil, err
 	}
 	if !ok {
-		return nil, ErrUnableToStoreKey
+		return nil, errors.ErrUnableToStoreKey
 	}
 
 	return uc.genQRCode(key)
 }
 
 func (uc *accountUsecase) Setup2FA(ctx context.Context, email, code string) (bool, error) {
-	span := uc.service.StartSpan(ctx, "Setup2FA")
+	methodName := uc.getMethodFromContext(ctx)
+
+	span := uc.service.StartSpan(ctx, methodName)
 	defer span.Finish()
 
 	ctx = uc.service.ContextWithSpan(context.Background(), span)
 
-	return uc.setup2FA(ctx, email, code)
+	ok, err := uc.setup2FA(ctx, email, code)
+	if err != nil {
+		err = uc.wrapError(err, methodName)
+	}
+	return ok, err
 }
 
 func (uc *accountUsecase) setup2FA(ctx context.Context, email, code string) (bool, error) {
@@ -210,7 +252,7 @@ func (uc *accountUsecase) setup2FA(ctx context.Context, email, code string) (boo
 
 	valid := totp.Validate(code, secret)
 	if !valid {
-		return false, ErrInvalid2FACode
+		return false, errors.ErrInvalid2FACode
 	}
 
 	account.Secret2FA = secret
@@ -224,12 +266,18 @@ func (uc *accountUsecase) setup2FA(ctx context.Context, email, code string) (boo
 }
 
 func (uc *accountUsecase) Remove2FA(ctx context.Context, email, code string) (bool, error) {
-	span := uc.service.StartSpan(ctx, "Remove2FA")
+	methodName := uc.getMethodFromContext(ctx)
+
+	span := uc.service.StartSpan(ctx, methodName)
 	defer span.Finish()
 
 	ctx = uc.service.ContextWithSpan(context.Background(), span)
 
-	return uc.remove2FA(ctx, email, code)
+	ok, err := uc.remove2FA(ctx, email, code)
+	if err != nil {
+		err = uc.wrapError(err, methodName)
+	}
+	return ok, err
 }
 
 func (uc *accountUsecase) remove2FA(ctx context.Context, email, code string) (bool, error) {
@@ -239,12 +287,12 @@ func (uc *accountUsecase) remove2FA(ctx context.Context, email, code string) (bo
 	}
 
 	if !account.Has2FA() {
-		return false, Err2FADisabled
+		return false, errors.Err2FADisabled
 	}
 
 	valid := totp.Validate(code, account.Secret2FA)
 	if !valid {
-		return false, ErrInvalid2FACode
+		return false, errors.ErrInvalid2FACode
 	}
 
 	account.Secret2FA = ""
@@ -257,12 +305,18 @@ func (uc *accountUsecase) remove2FA(ctx context.Context, email, code string) (bo
 }
 
 func (uc *accountUsecase) Verify2FA(ctx context.Context, email, code string) (bool, error) {
-	span := uc.service.StartSpan(ctx, "Verify2FA")
+	methodName := uc.getMethodFromContext(ctx)
+
+	span := uc.service.StartSpan(ctx, methodName)
 	defer span.Finish()
 
 	ctx = uc.service.ContextWithSpan(context.Background(), span)
 
-	return uc.verify2FA(ctx, email, code)
+	ok, err := uc.verify2FA(ctx, email, code)
+	if err != nil {
+		err = uc.wrapError(err, methodName)
+	}
+	return ok, err
 }
 
 func (uc *accountUsecase) verify2FA(ctx context.Context, email, code string) (bool, error) {
@@ -272,12 +326,12 @@ func (uc *accountUsecase) verify2FA(ctx context.Context, email, code string) (bo
 	}
 
 	if !account.Has2FA() {
-		return false, Err2FADisabled
+		return false, errors.Err2FADisabled
 	}
 
 	valid := totp.Validate(code, account.Secret2FA)
 	if !valid {
-		return false, ErrInvalid2FACode
+		return false, errors.ErrInvalid2FACode
 	}
 	return valid, nil
 }
@@ -311,4 +365,12 @@ func (uc *accountUsecase) hash(pwd string) (string, error) {
 		return "", err
 	}
 	return string(hash), err
+}
+
+func (uc *accountUsecase) wrapError(err error, method string) error {
+	return &errors.UsecaseError{method, err}
+}
+
+func (uc *accountUsecase) getMethodFromContext(ctx context.Context) string {
+	return fmt.Sprintf(usecaseMethodTemplate, ctx.Value("method").(string))
 }

@@ -2,14 +2,14 @@ syntax="proto3";
 package Auth;
 
 service Auth {
-    rpc Register(RegisterRequest) returns (RegisterReply) {}
-    rpc Login (LoginRequest) returns (LoginReply) {}
-    rpc UpdateCredentials (UpdateCredentialsRequest) returns (UpdateCredentialsReply){}
-    rpc ActivateAccount(ActivateAccountRequest) returns (ActivateAccountReply){}
-    rpc Generate2FA(Generate2FARequest) returns (Generate2FAReply){}
-    rpc Setup2FA(Setup2FARequest) returns (Setup2FAReply){}
-    rpc Disable2FA(Disable2FARequest) returns (Disable2FAReply){}
-    rpc Verify2FA(Verify2FARequest) returns (Verify2FAReply){}
+    rpc Register(RegisterRequest) returns (RegisterResponse) {}
+    rpc Login (LoginRequest) returns (LoginResponse) {}
+    rpc UpdateCredentials (UpdateCredentialsRequest) returns (UpdateCredentialsResponse){}
+    rpc ActivateAccount(ActivateAccountRequest) returns (ActivateAccountResponse){}
+    rpc Generate2FA(Generate2FARequest) returns (Generate2FAResponse){}
+    rpc Setup2FA(Setup2FARequest) returns (Setup2FAResponse){}
+    rpc Disable2FA(Disable2FARequest) returns (Disable2FAResponse){}
+    rpc Verify2FA(Verify2FARequest) returns (Verify2FAResponse){}
 } 
 
 message RegisterRequest {
@@ -17,7 +17,7 @@ message RegisterRequest {
     string password = 2;
 }
 
-message RegisterReply {
+message RegisterResponse {
     bool ok = 1;
 }
 
@@ -26,7 +26,7 @@ message LoginRequest {
     string password = 2;
 }
 
-message LoginReply {
+message LoginResponse {
     string token = 1;
 }
 
@@ -35,7 +35,7 @@ message UpdateCredentialsRequest {
     string password = 2;
 }
 
-message UpdateCredentialsReply {
+message UpdateCredentialsResponse {
     bool ok = 1;
 }
 
@@ -43,7 +43,7 @@ message ActivateAccountRequest {
     string email = 1;
 }
 
-message ActivateAccountReply {
+message ActivateAccountResponse {
     bool ok = 1;
 }
 
@@ -51,7 +51,7 @@ message Generate2FARequest {
     string email = 1;
 }
 
-message Generate2FAReply {
+message Generate2FAResponse {
     bytes qr_image = 1;
 }
 
@@ -60,7 +60,7 @@ message Setup2FARequest {
     string code = 2;
 }
 
-message Setup2FAReply {
+message Setup2FAResponse {
     bool ok = 1;
 }
 
@@ -69,7 +69,7 @@ message Disable2FARequest {
     string code = 2;
 }
 
-message Disable2FAReply {
+message Disable2FAResponse {
     bool ok = 1;
 }
 
@@ -78,6 +78,6 @@ message Verify2FARequest {
     string code = 2;
 }
 
-message Verify2FAReply {
+message Verify2FAResponse {
     bool ok = 1;
 }

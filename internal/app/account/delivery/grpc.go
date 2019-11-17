@@ -2,13 +2,23 @@ package delivery
 
 import (
 	"context"
+	"errors"
+	"fmt"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 
 	pb "github.com/barugoo/oscillo-auth/api/grpc"
 
 	"github.com/barugoo/oscillo-auth/internal/app/models"
 
 	"github.com/barugoo/oscillo-auth/internal/app/account/usecase"
+	errs "github.com/barugoo/oscillo-auth/internal/app/errors"
 	"github.com/barugoo/oscillo-auth/internal/app/service"
+)
+
+const (
+	deliveryMethodTemplate = "%s/delivery"
 )
 
 type authGRPCServer struct {
@@ -23,16 +33,26 @@ func NewAuthGRPCServer(service service.AuthService, accountUsecase usecase.Accou
 	}
 }
 
-func (auth *authGRPCServer) Register(ctx context.Context, req *pb.RegisterRequest) (*pb.RegisterReply, error) {
-	span := auth.service.StartSpan(ctx, "Register")
+func (auth *authGRPCServer) Register(ctx context.Context, req *pb.RegisterRequest) (*pb.RegisterResponse, error) {
+	methodName, err := auth.getMethodFromContext(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	span := auth.service.StartSpan(ctx, methodName)
 	defer span.Finish()
 
-	ctx = auth.service.ContextWithSpan(context.Background(), span)
+	spanCtx := auth.service.ContextWithSpan(context.Background(), span)
+	methodCtx := auth.contextWithMethod(spanCtx, methodName)
 
-	return auth.register(ctx, req)
+	resp, err := auth.register(methodCtx, req)
+	if err != nil {
+		err = auth.grpcError(auth.wrapError(err, req.Email))
+	}
+	return resp, err
 }
 
-func (auth *authGRPCServer) register(ctx context.Context, req *pb.RegisterRequest) (*pb.RegisterReply, error) {
+func (auth *authGRPCServer) register(ctx context.Context, req *pb.RegisterRequest) (*pb.RegisterResponse, error) {
 	r := &models.Credentials{
 		Email:    req.Email,
 		Password: req.Password,
@@ -41,21 +61,31 @@ func (auth *authGRPCServer) register(ctx context.Context, req *pb.RegisterReques
 	if err != nil {
 		return nil, err
 	}
-	return &pb.RegisterReply{
+	return &pb.RegisterResponse{
 		Ok: ok,
 	}, err
 }
 
-func (auth *authGRPCServer) Login(ctx context.Context, req *pb.LoginRequest) (*pb.LoginReply, error) {
-	span := auth.service.StartSpan(ctx, "Login")
+func (auth *authGRPCServer) Login(ctx context.Context, req *pb.LoginRequest) (*pb.LoginResponse, error) {
+	methodName, err := auth.getMethodFromContext(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	span := auth.service.StartSpan(ctx, methodName)
 	defer span.Finish()
 
-	ctx = auth.service.ContextWithSpan(context.Background(), span)
+	spanCtx := auth.service.ContextWithSpan(context.Background(), span)
+	methodCtx := auth.contextWithMethod(spanCtx, methodName)
 
-	return auth.login(ctx, req)
+	resp, err := auth.login(methodCtx, req)
+	if err != nil {
+		err = auth.grpcError(auth.wrapError(err, req.Email))
+	}
+	return resp, err
 }
 
-func (auth *authGRPCServer) login(ctx context.Context, req *pb.LoginRequest) (*pb.LoginReply, error) {
+func (auth *authGRPCServer) login(ctx context.Context, req *pb.LoginRequest) (*pb.LoginResponse, error) {
 	r := &models.Credentials{
 		Email:    req.Email,
 		Password: req.Password,
@@ -64,21 +94,31 @@ func (auth *authGRPCServer) login(ctx context.Context, req *pb.LoginRequest) (*p
 	if err != nil {
 		return nil, err
 	}
-	return &pb.LoginReply{
+	return &pb.LoginResponse{
 		Token: token,
 	}, err
 }
 
-func (auth *authGRPCServer) UpdateCredentials(ctx context.Context, req *pb.UpdateCredentialsRequest) (*pb.UpdateCredentialsReply, error) {
-	span := auth.service.StartSpan(ctx, "UpdateCredentials")
+func (auth *authGRPCServer) UpdateCredentials(ctx context.Context, req *pb.UpdateCredentialsRequest) (*pb.UpdateCredentialsResponse, error) {
+	methodName, err := auth.getMethodFromContext(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	span := auth.service.StartSpan(ctx, methodName)
 	defer span.Finish()
 
-	ctx = auth.service.ContextWithSpan(context.Background(), span)
+	spanCtx := auth.service.ContextWithSpan(context.Background(), span)
+	methodCtx := auth.contextWithMethod(spanCtx, methodName)
 
-	return auth.updateCredentials(ctx, req)
+	resp, err := auth.updateCredentials(methodCtx, req)
+	if err != nil {
+		err = auth.grpcError(auth.wrapError(err, req.Email))
+	}
+	return resp, err
 }
 
-func (auth *authGRPCServer) updateCredentials(ctx context.Context, req *pb.UpdateCredentialsRequest) (*pb.UpdateCredentialsReply, error) {
+func (auth *authGRPCServer) updateCredentials(ctx context.Context, req *pb.UpdateCredentialsRequest) (*pb.UpdateCredentialsResponse, error) {
 	r := &models.Credentials{
 		Email:    req.Email,
 		Password: req.Password,
@@ -87,102 +127,210 @@ func (auth *authGRPCServer) updateCredentials(ctx context.Context, req *pb.Updat
 	if err != nil {
 		return nil, err
 	}
-	return &pb.UpdateCredentialsReply{
+	return &pb.UpdateCredentialsResponse{
 		Ok: ok,
 	}, err
 }
 
-func (auth *authGRPCServer) ActivateAccount(ctx context.Context, req *pb.ActivateAccountRequest) (*pb.ActivateAccountReply, error) {
-	span := auth.service.StartSpan(ctx, "UpdateCredentials")
+func (auth *authGRPCServer) ActivateAccount(ctx context.Context, req *pb.ActivateAccountRequest) (*pb.ActivateAccountResponse, error) {
+	methodName, err := auth.getMethodFromContext(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	span := auth.service.StartSpan(ctx, methodName)
 	defer span.Finish()
 
-	ctx = auth.service.ContextWithSpan(context.Background(), span)
+	spanCtx := auth.service.ContextWithSpan(context.Background(), span)
+	methodCtx := auth.contextWithMethod(spanCtx, methodName)
 
-	return auth.activateAccount(ctx, req)
+	resp, err := auth.activateAccount(methodCtx, req)
+	if err != nil {
+		err = auth.grpcError(auth.wrapError(err, req.Email))
+	}
+	return resp, err
 }
 
-func (auth *authGRPCServer) activateAccount(ctx context.Context, req *pb.ActivateAccountRequest) (*pb.ActivateAccountReply, error) {
+func (auth *authGRPCServer) activateAccount(ctx context.Context, req *pb.ActivateAccountRequest) (*pb.ActivateAccountResponse, error) {
 	ok, err := auth.accountCase.ActivateAccount(ctx, req.Email)
 	if err != nil {
 		return nil, err
 	}
-	return &pb.ActivateAccountReply{
+	return &pb.ActivateAccountResponse{
 		Ok: ok,
 	}, err
 }
 
-func (auth *authGRPCServer) Generate2FA(ctx context.Context, req *pb.Generate2FARequest) (*pb.Generate2FAReply, error) {
-	span := auth.service.StartSpan(ctx, "Generate2FA")
+func (auth *authGRPCServer) Generate2FA(ctx context.Context, req *pb.Generate2FARequest) (*pb.Generate2FAResponse, error) {
+	methodName, err := auth.getMethodFromContext(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	span := auth.service.StartSpan(ctx, methodName)
 	defer span.Finish()
 
-	ctx = auth.service.ContextWithSpan(context.Background(), span)
+	spanCtx := auth.service.ContextWithSpan(context.Background(), span)
+	methodCtx := auth.contextWithMethod(spanCtx, methodName)
 
-	return auth.generate2FA(ctx, req)
+	resp, err := auth.generate2FA(methodCtx, req)
+	if err != nil {
+		err = auth.grpcError(auth.wrapError(err, req.Email))
+	}
+	return resp, err
 }
 
-func (auth *authGRPCServer) generate2FA(ctx context.Context, req *pb.Generate2FARequest) (*pb.Generate2FAReply, error) {
+func (auth *authGRPCServer) generate2FA(ctx context.Context, req *pb.Generate2FARequest) (*pb.Generate2FAResponse, error) {
 	img, err := auth.accountCase.Generate2FA(ctx, req.Email)
 	if err != nil {
 		return nil, err
 	}
-	return &pb.Generate2FAReply{
+	return &pb.Generate2FAResponse{
 		QrImage: img,
 	}, err
 }
 
-func (auth *authGRPCServer) Setup2FA(ctx context.Context, req *pb.Setup2FARequest) (*pb.Setup2FAReply, error) {
-	span := auth.service.StartSpan(ctx, "Setup2FA")
+func (auth *authGRPCServer) Setup2FA(ctx context.Context, req *pb.Setup2FARequest) (*pb.Setup2FAResponse, error) {
+	methodName, err := auth.getMethodFromContext(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	span := auth.service.StartSpan(ctx, methodName)
 	defer span.Finish()
 
-	ctx = auth.service.ContextWithSpan(context.Background(), span)
+	spanCtx := auth.service.ContextWithSpan(context.Background(), span)
+	methodCtx := auth.contextWithMethod(spanCtx, methodName)
 
-	return auth.setup2FA(ctx, req)
+	resp, err := auth.setup2FA(methodCtx, req)
+	if err != nil {
+		err = auth.grpcError(auth.wrapError(err, req.Email))
+	}
+	return resp, err
 }
 
-func (auth *authGRPCServer) setup2FA(ctx context.Context, req *pb.Setup2FARequest) (*pb.Setup2FAReply, error) {
+func (auth *authGRPCServer) setup2FA(ctx context.Context, req *pb.Setup2FARequest) (*pb.Setup2FAResponse, error) {
 	ok, err := auth.accountCase.Setup2FA(ctx, req.Email, req.Code)
 	if err != nil {
 		return nil, err
 	}
-	return &pb.Setup2FAReply{
+	return &pb.Setup2FAResponse{
 		Ok: ok,
 	}, err
 }
 
-func (auth *authGRPCServer) Disable2FA(ctx context.Context, req *pb.Disable2FARequest) (*pb.Disable2FAReply, error) {
-	span := auth.service.StartSpan(ctx, "Disable2FA")
+func (auth *authGRPCServer) Disable2FA(ctx context.Context, req *pb.Disable2FARequest) (*pb.Disable2FAResponse, error) {
+	methodName, err := auth.getMethodFromContext(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	span := auth.service.StartSpan(ctx, methodName)
 	defer span.Finish()
 
-	ctx = auth.service.ContextWithSpan(context.Background(), span)
+	spanCtx := auth.service.ContextWithSpan(context.Background(), span)
+	methodCtx := auth.contextWithMethod(spanCtx, methodName)
 
-	return auth.disable2FA(ctx, req)
+	resp, err := auth.disable2FA(methodCtx, req)
+	if err != nil {
+		err = auth.grpcError(auth.wrapError(err, req.Email))
+	}
+	return resp, err
 }
 
-func (auth *authGRPCServer) disable2FA(ctx context.Context, req *pb.Disable2FARequest) (*pb.Disable2FAReply, error) {
+func (auth *authGRPCServer) disable2FA(ctx context.Context, req *pb.Disable2FARequest) (*pb.Disable2FAResponse, error) {
 	ok, err := auth.accountCase.Remove2FA(ctx, req.Email, req.Code)
 	if err != nil {
 		return nil, err
 	}
-	return &pb.Disable2FAReply{
+	return &pb.Disable2FAResponse{
 		Ok: ok,
 	}, err
 }
 
-func (auth *authGRPCServer) Verify2FA(ctx context.Context, req *pb.Verify2FARequest) (*pb.Verify2FAReply, error) {
-	span := auth.service.StartSpan(ctx, "Verify2FA")
+func (auth *authGRPCServer) Verify2FA(ctx context.Context, req *pb.Verify2FARequest) (*pb.Verify2FAResponse, error) {
+	methodName, err := auth.getMethodFromContext(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	span := auth.service.StartSpan(ctx, methodName)
 	defer span.Finish()
 
-	ctx = auth.service.ContextWithSpan(context.Background(), span)
+	spanCtx := auth.service.ContextWithSpan(context.Background(), span)
+	methodCtx := auth.contextWithMethod(spanCtx, methodName)
 
-	return auth.verify2FA(ctx, req)
+	resp, err := auth.verify2FA(methodCtx, req)
+	if err != nil {
+		err = auth.grpcError(auth.wrapError(err, req.Email))
+	}
+	return resp, err
 }
 
-func (auth *authGRPCServer) verify2FA(ctx context.Context, req *pb.Verify2FARequest) (*pb.Verify2FAReply, error) {
+func (auth *authGRPCServer) verify2FA(ctx context.Context, req *pb.Verify2FARequest) (*pb.Verify2FAResponse, error) {
 	ok, err := auth.accountCase.Verify2FA(ctx, req.Email, req.Code)
 	if err != nil {
 		return nil, err
 	}
-	return &pb.Verify2FAReply{
+	return &pb.Verify2FAResponse{
 		Ok: ok,
 	}, err
+}
+
+func (auth *authGRPCServer) contextWithMethod(ctx context.Context, method string) context.Context {
+	return context.WithValue(ctx, "method", method)
+}
+
+func (auth *authGRPCServer) getMethodFromContext(ctx context.Context) (string, error) {
+	methodName, ok := grpc.Method(ctx)
+	if !ok {
+		return "", errs.ErrBrokenContext
+	}
+	return fmt.Sprintf(deliveryMethodTemplate, methodName), nil
+}
+
+func (auth *authGRPCServer) grpcError(err error) error {
+	return status.Error(auth.mapStatusCode(err), err.Error())
+}
+
+func (auth *authGRPCServer) wrapError(err error, email string) error {
+	return &errs.DeliveryError{
+		Email: email,
+		Err:   err,
+	}
+}
+
+func (auth *authGRPCServer) mapStatusCode(err error) codes.Code {
+	var repErr *errs.RepositoryError
+	if errors.As(err, &repErr) {
+		switch repErr.Err {
+		case errs.ErrNotFound:
+			return codes.NotFound
+		default:
+			return codes.Internal
+		}
+	}
+
+	var serviceErr *errs.ServiceError
+	if errors.As(err, &serviceErr) {
+		switch serviceErr.Err {
+		default:
+			return codes.Internal
+		}
+	}
+
+	var caseErr *errs.UsecaseError
+	if errors.As(err, &caseErr) {
+		switch caseErr.Err {
+		case errs.ErrWrongPassword, errs.ErrInvalid2FACode, errs.ErrInactiveAccount:
+			return codes.Unauthenticated
+		case errs.Err2FADisabled:
+			return codes.InvalidArgument
+		case errs.ErrUnableToStoreKey:
+			fallthrough
+		default:
+			return codes.Internal
+		}
+	}
+	return codes.Unknown
 }

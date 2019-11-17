@@ -54,7 +54,7 @@ func (a *authService) StartSpan(ctx context.Context, name string) opentracing.Sp
 }
 
 func (a *authService) ContextWithSpan(ctx context.Context, span opentracing.Span) context.Context {
-	return opentracing.ContextWithSpan(context.Background(), span)
+	return opentracing.ContextWithSpan(ctx, span)
 }
 
 func NewAuthService(tracer opentracing.Tracer) AuthService {

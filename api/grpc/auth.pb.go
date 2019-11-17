@@ -78,25 +78,25 @@ func (m *RegisterRequest) GetPassword() string {
 	return ""
 }
 
-type RegisterReply struct {
+type RegisterResponse struct {
 	Ok                   bool     `protobuf:"varint,1,opt,name=ok,proto3" json:"ok,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *RegisterReply) Reset()         { *m = RegisterReply{} }
-func (m *RegisterReply) String() string { return proto.CompactTextString(m) }
-func (*RegisterReply) ProtoMessage()    {}
-func (*RegisterReply) Descriptor() ([]byte, []int) {
+func (m *RegisterResponse) Reset()         { *m = RegisterResponse{} }
+func (m *RegisterResponse) String() string { return proto.CompactTextString(m) }
+func (*RegisterResponse) ProtoMessage()    {}
+func (*RegisterResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_8bbd6f3875b0e874, []int{1}
 }
-func (m *RegisterReply) XXX_Unmarshal(b []byte) error {
+func (m *RegisterResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *RegisterReply) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *RegisterResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_RegisterReply.Marshal(b, m, deterministic)
+		return xxx_messageInfo_RegisterResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalTo(b)
@@ -106,19 +106,19 @@ func (m *RegisterReply) XXX_Marshal(b []byte, deterministic bool) ([]byte, error
 		return b[:n], nil
 	}
 }
-func (m *RegisterReply) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_RegisterReply.Merge(m, src)
+func (m *RegisterResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_RegisterResponse.Merge(m, src)
 }
-func (m *RegisterReply) XXX_Size() int {
+func (m *RegisterResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *RegisterReply) XXX_DiscardUnknown() {
-	xxx_messageInfo_RegisterReply.DiscardUnknown(m)
+func (m *RegisterResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_RegisterResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_RegisterReply proto.InternalMessageInfo
+var xxx_messageInfo_RegisterResponse proto.InternalMessageInfo
 
-func (m *RegisterReply) GetOk() bool {
+func (m *RegisterResponse) GetOk() bool {
 	if m != nil {
 		return m.Ok
 	}
@@ -180,25 +180,25 @@ func (m *LoginRequest) GetPassword() string {
 	return ""
 }
 
-type LoginReply struct {
+type LoginResponse struct {
 	Token                string   `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *LoginReply) Reset()         { *m = LoginReply{} }
-func (m *LoginReply) String() string { return proto.CompactTextString(m) }
-func (*LoginReply) ProtoMessage()    {}
-func (*LoginReply) Descriptor() ([]byte, []int) {
+func (m *LoginResponse) Reset()         { *m = LoginResponse{} }
+func (m *LoginResponse) String() string { return proto.CompactTextString(m) }
+func (*LoginResponse) ProtoMessage()    {}
+func (*LoginResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_8bbd6f3875b0e874, []int{3}
 }
-func (m *LoginReply) XXX_Unmarshal(b []byte) error {
+func (m *LoginResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *LoginReply) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *LoginResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_LoginReply.Marshal(b, m, deterministic)
+		return xxx_messageInfo_LoginResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalTo(b)
@@ -208,19 +208,19 @@ func (m *LoginReply) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return b[:n], nil
 	}
 }
-func (m *LoginReply) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_LoginReply.Merge(m, src)
+func (m *LoginResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_LoginResponse.Merge(m, src)
 }
-func (m *LoginReply) XXX_Size() int {
+func (m *LoginResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *LoginReply) XXX_DiscardUnknown() {
-	xxx_messageInfo_LoginReply.DiscardUnknown(m)
+func (m *LoginResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_LoginResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_LoginReply proto.InternalMessageInfo
+var xxx_messageInfo_LoginResponse proto.InternalMessageInfo
 
-func (m *LoginReply) GetToken() string {
+func (m *LoginResponse) GetToken() string {
 	if m != nil {
 		return m.Token
 	}
@@ -282,25 +282,25 @@ func (m *UpdateCredentialsRequest) GetPassword() string {
 	return ""
 }
 
-type UpdateCredentialsReply struct {
+type UpdateCredentialsResponse struct {
 	Ok                   bool     `protobuf:"varint,1,opt,name=ok,proto3" json:"ok,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *UpdateCredentialsReply) Reset()         { *m = UpdateCredentialsReply{} }
-func (m *UpdateCredentialsReply) String() string { return proto.CompactTextString(m) }
-func (*UpdateCredentialsReply) ProtoMessage()    {}
-func (*UpdateCredentialsReply) Descriptor() ([]byte, []int) {
+func (m *UpdateCredentialsResponse) Reset()         { *m = UpdateCredentialsResponse{} }
+func (m *UpdateCredentialsResponse) String() string { return proto.CompactTextString(m) }
+func (*UpdateCredentialsResponse) ProtoMessage()    {}
+func (*UpdateCredentialsResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_8bbd6f3875b0e874, []int{5}
 }
-func (m *UpdateCredentialsReply) XXX_Unmarshal(b []byte) error {
+func (m *UpdateCredentialsResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *UpdateCredentialsReply) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *UpdateCredentialsResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_UpdateCredentialsReply.Marshal(b, m, deterministic)
+		return xxx_messageInfo_UpdateCredentialsResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalTo(b)
@@ -310,19 +310,19 @@ func (m *UpdateCredentialsReply) XXX_Marshal(b []byte, deterministic bool) ([]by
 		return b[:n], nil
 	}
 }
-func (m *UpdateCredentialsReply) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_UpdateCredentialsReply.Merge(m, src)
+func (m *UpdateCredentialsResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UpdateCredentialsResponse.Merge(m, src)
 }
-func (m *UpdateCredentialsReply) XXX_Size() int {
+func (m *UpdateCredentialsResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *UpdateCredentialsReply) XXX_DiscardUnknown() {
-	xxx_messageInfo_UpdateCredentialsReply.DiscardUnknown(m)
+func (m *UpdateCredentialsResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_UpdateCredentialsResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_UpdateCredentialsReply proto.InternalMessageInfo
+var xxx_messageInfo_UpdateCredentialsResponse proto.InternalMessageInfo
 
-func (m *UpdateCredentialsReply) GetOk() bool {
+func (m *UpdateCredentialsResponse) GetOk() bool {
 	if m != nil {
 		return m.Ok
 	}
@@ -376,25 +376,25 @@ func (m *ActivateAccountRequest) GetEmail() string {
 	return ""
 }
 
-type ActivateAccountReply struct {
+type ActivateAccountResponse struct {
 	Ok                   bool     `protobuf:"varint,1,opt,name=ok,proto3" json:"ok,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *ActivateAccountReply) Reset()         { *m = ActivateAccountReply{} }
-func (m *ActivateAccountReply) String() string { return proto.CompactTextString(m) }
-func (*ActivateAccountReply) ProtoMessage()    {}
-func (*ActivateAccountReply) Descriptor() ([]byte, []int) {
+func (m *ActivateAccountResponse) Reset()         { *m = ActivateAccountResponse{} }
+func (m *ActivateAccountResponse) String() string { return proto.CompactTextString(m) }
+func (*ActivateAccountResponse) ProtoMessage()    {}
+func (*ActivateAccountResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_8bbd6f3875b0e874, []int{7}
 }
-func (m *ActivateAccountReply) XXX_Unmarshal(b []byte) error {
+func (m *ActivateAccountResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *ActivateAccountReply) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *ActivateAccountResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_ActivateAccountReply.Marshal(b, m, deterministic)
+		return xxx_messageInfo_ActivateAccountResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalTo(b)
@@ -404,19 +404,19 @@ func (m *ActivateAccountReply) XXX_Marshal(b []byte, deterministic bool) ([]byte
 		return b[:n], nil
 	}
 }
-func (m *ActivateAccountReply) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ActivateAccountReply.Merge(m, src)
+func (m *ActivateAccountResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ActivateAccountResponse.Merge(m, src)
 }
-func (m *ActivateAccountReply) XXX_Size() int {
+func (m *ActivateAccountResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *ActivateAccountReply) XXX_DiscardUnknown() {
-	xxx_messageInfo_ActivateAccountReply.DiscardUnknown(m)
+func (m *ActivateAccountResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_ActivateAccountResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_ActivateAccountReply proto.InternalMessageInfo
+var xxx_messageInfo_ActivateAccountResponse proto.InternalMessageInfo
 
-func (m *ActivateAccountReply) GetOk() bool {
+func (m *ActivateAccountResponse) GetOk() bool {
 	if m != nil {
 		return m.Ok
 	}
@@ -470,25 +470,25 @@ func (m *Generate2FARequest) GetEmail() string {
 	return ""
 }
 
-type Generate2FAReply struct {
+type Generate2FAResponse struct {
 	QrImage              []byte   `protobuf:"bytes,1,opt,name=qr_image,json=qrImage,proto3" json:"qr_image,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *Generate2FAReply) Reset()         { *m = Generate2FAReply{} }
-func (m *Generate2FAReply) String() string { return proto.CompactTextString(m) }
-func (*Generate2FAReply) ProtoMessage()    {}
-func (*Generate2FAReply) Descriptor() ([]byte, []int) {
+func (m *Generate2FAResponse) Reset()         { *m = Generate2FAResponse{} }
+func (m *Generate2FAResponse) String() string { return proto.CompactTextString(m) }
+func (*Generate2FAResponse) ProtoMessage()    {}
+func (*Generate2FAResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_8bbd6f3875b0e874, []int{9}
 }
-func (m *Generate2FAReply) XXX_Unmarshal(b []byte) error {
+func (m *Generate2FAResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *Generate2FAReply) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *Generate2FAResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_Generate2FAReply.Marshal(b, m, deterministic)
+		return xxx_messageInfo_Generate2FAResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalTo(b)
@@ -498,19 +498,19 @@ func (m *Generate2FAReply) XXX_Marshal(b []byte, deterministic bool) ([]byte, er
 		return b[:n], nil
 	}
 }
-func (m *Generate2FAReply) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Generate2FAReply.Merge(m, src)
+func (m *Generate2FAResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Generate2FAResponse.Merge(m, src)
 }
-func (m *Generate2FAReply) XXX_Size() int {
+func (m *Generate2FAResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *Generate2FAReply) XXX_DiscardUnknown() {
-	xxx_messageInfo_Generate2FAReply.DiscardUnknown(m)
+func (m *Generate2FAResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_Generate2FAResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_Generate2FAReply proto.InternalMessageInfo
+var xxx_messageInfo_Generate2FAResponse proto.InternalMessageInfo
 
-func (m *Generate2FAReply) GetQrImage() []byte {
+func (m *Generate2FAResponse) GetQrImage() []byte {
 	if m != nil {
 		return m.QrImage
 	}
@@ -572,25 +572,25 @@ func (m *Setup2FARequest) GetCode() string {
 	return ""
 }
 
-type Setup2FAReply struct {
+type Setup2FAResponse struct {
 	Ok                   bool     `protobuf:"varint,1,opt,name=ok,proto3" json:"ok,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *Setup2FAReply) Reset()         { *m = Setup2FAReply{} }
-func (m *Setup2FAReply) String() string { return proto.CompactTextString(m) }
-func (*Setup2FAReply) ProtoMessage()    {}
-func (*Setup2FAReply) Descriptor() ([]byte, []int) {
+func (m *Setup2FAResponse) Reset()         { *m = Setup2FAResponse{} }
+func (m *Setup2FAResponse) String() string { return proto.CompactTextString(m) }
+func (*Setup2FAResponse) ProtoMessage()    {}
+func (*Setup2FAResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_8bbd6f3875b0e874, []int{11}
 }
-func (m *Setup2FAReply) XXX_Unmarshal(b []byte) error {
+func (m *Setup2FAResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *Setup2FAReply) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *Setup2FAResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_Setup2FAReply.Marshal(b, m, deterministic)
+		return xxx_messageInfo_Setup2FAResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalTo(b)
@@ -600,19 +600,19 @@ func (m *Setup2FAReply) XXX_Marshal(b []byte, deterministic bool) ([]byte, error
 		return b[:n], nil
 	}
 }
-func (m *Setup2FAReply) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Setup2FAReply.Merge(m, src)
+func (m *Setup2FAResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Setup2FAResponse.Merge(m, src)
 }
-func (m *Setup2FAReply) XXX_Size() int {
+func (m *Setup2FAResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *Setup2FAReply) XXX_DiscardUnknown() {
-	xxx_messageInfo_Setup2FAReply.DiscardUnknown(m)
+func (m *Setup2FAResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_Setup2FAResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_Setup2FAReply proto.InternalMessageInfo
+var xxx_messageInfo_Setup2FAResponse proto.InternalMessageInfo
 
-func (m *Setup2FAReply) GetOk() bool {
+func (m *Setup2FAResponse) GetOk() bool {
 	if m != nil {
 		return m.Ok
 	}
@@ -674,25 +674,25 @@ func (m *Disable2FARequest) GetCode() string {
 	return ""
 }
 
-type Disable2FAReply struct {
+type Disable2FAResponse struct {
 	Ok                   bool     `protobuf:"varint,1,opt,name=ok,proto3" json:"ok,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *Disable2FAReply) Reset()         { *m = Disable2FAReply{} }
-func (m *Disable2FAReply) String() string { return proto.CompactTextString(m) }
-func (*Disable2FAReply) ProtoMessage()    {}
-func (*Disable2FAReply) Descriptor() ([]byte, []int) {
+func (m *Disable2FAResponse) Reset()         { *m = Disable2FAResponse{} }
+func (m *Disable2FAResponse) String() string { return proto.CompactTextString(m) }
+func (*Disable2FAResponse) ProtoMessage()    {}
+func (*Disable2FAResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_8bbd6f3875b0e874, []int{13}
 }
-func (m *Disable2FAReply) XXX_Unmarshal(b []byte) error {
+func (m *Disable2FAResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *Disable2FAReply) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *Disable2FAResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_Disable2FAReply.Marshal(b, m, deterministic)
+		return xxx_messageInfo_Disable2FAResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalTo(b)
@@ -702,19 +702,19 @@ func (m *Disable2FAReply) XXX_Marshal(b []byte, deterministic bool) ([]byte, err
 		return b[:n], nil
 	}
 }
-func (m *Disable2FAReply) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Disable2FAReply.Merge(m, src)
+func (m *Disable2FAResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Disable2FAResponse.Merge(m, src)
 }
-func (m *Disable2FAReply) XXX_Size() int {
+func (m *Disable2FAResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *Disable2FAReply) XXX_DiscardUnknown() {
-	xxx_messageInfo_Disable2FAReply.DiscardUnknown(m)
+func (m *Disable2FAResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_Disable2FAResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_Disable2FAReply proto.InternalMessageInfo
+var xxx_messageInfo_Disable2FAResponse proto.InternalMessageInfo
 
-func (m *Disable2FAReply) GetOk() bool {
+func (m *Disable2FAResponse) GetOk() bool {
 	if m != nil {
 		return m.Ok
 	}
@@ -776,25 +776,25 @@ func (m *Verify2FARequest) GetCode() string {
 	return ""
 }
 
-type Verify2FAReply struct {
+type Verify2FAResponse struct {
 	Ok                   bool     `protobuf:"varint,1,opt,name=ok,proto3" json:"ok,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *Verify2FAReply) Reset()         { *m = Verify2FAReply{} }
-func (m *Verify2FAReply) String() string { return proto.CompactTextString(m) }
-func (*Verify2FAReply) ProtoMessage()    {}
-func (*Verify2FAReply) Descriptor() ([]byte, []int) {
+func (m *Verify2FAResponse) Reset()         { *m = Verify2FAResponse{} }
+func (m *Verify2FAResponse) String() string { return proto.CompactTextString(m) }
+func (*Verify2FAResponse) ProtoMessage()    {}
+func (*Verify2FAResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_8bbd6f3875b0e874, []int{15}
 }
-func (m *Verify2FAReply) XXX_Unmarshal(b []byte) error {
+func (m *Verify2FAResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *Verify2FAReply) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *Verify2FAResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_Verify2FAReply.Marshal(b, m, deterministic)
+		return xxx_messageInfo_Verify2FAResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalTo(b)
@@ -804,19 +804,19 @@ func (m *Verify2FAReply) XXX_Marshal(b []byte, deterministic bool) ([]byte, erro
 		return b[:n], nil
 	}
 }
-func (m *Verify2FAReply) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Verify2FAReply.Merge(m, src)
+func (m *Verify2FAResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Verify2FAResponse.Merge(m, src)
 }
-func (m *Verify2FAReply) XXX_Size() int {
+func (m *Verify2FAResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *Verify2FAReply) XXX_DiscardUnknown() {
-	xxx_messageInfo_Verify2FAReply.DiscardUnknown(m)
+func (m *Verify2FAResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_Verify2FAResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_Verify2FAReply proto.InternalMessageInfo
+var xxx_messageInfo_Verify2FAResponse proto.InternalMessageInfo
 
-func (m *Verify2FAReply) GetOk() bool {
+func (m *Verify2FAResponse) GetOk() bool {
 	if m != nil {
 		return m.Ok
 	}
@@ -825,58 +825,58 @@ func (m *Verify2FAReply) GetOk() bool {
 
 func init() {
 	proto.RegisterType((*RegisterRequest)(nil), "Auth.RegisterRequest")
-	proto.RegisterType((*RegisterReply)(nil), "Auth.RegisterReply")
+	proto.RegisterType((*RegisterResponse)(nil), "Auth.RegisterResponse")
 	proto.RegisterType((*LoginRequest)(nil), "Auth.LoginRequest")
-	proto.RegisterType((*LoginReply)(nil), "Auth.LoginReply")
+	proto.RegisterType((*LoginResponse)(nil), "Auth.LoginResponse")
 	proto.RegisterType((*UpdateCredentialsRequest)(nil), "Auth.UpdateCredentialsRequest")
-	proto.RegisterType((*UpdateCredentialsReply)(nil), "Auth.UpdateCredentialsReply")
+	proto.RegisterType((*UpdateCredentialsResponse)(nil), "Auth.UpdateCredentialsResponse")
 	proto.RegisterType((*ActivateAccountRequest)(nil), "Auth.ActivateAccountRequest")
-	proto.RegisterType((*ActivateAccountReply)(nil), "Auth.ActivateAccountReply")
+	proto.RegisterType((*ActivateAccountResponse)(nil), "Auth.ActivateAccountResponse")
 	proto.RegisterType((*Generate2FARequest)(nil), "Auth.Generate2FARequest")
-	proto.RegisterType((*Generate2FAReply)(nil), "Auth.Generate2FAReply")
+	proto.RegisterType((*Generate2FAResponse)(nil), "Auth.Generate2FAResponse")
 	proto.RegisterType((*Setup2FARequest)(nil), "Auth.Setup2FARequest")
-	proto.RegisterType((*Setup2FAReply)(nil), "Auth.Setup2FAReply")
+	proto.RegisterType((*Setup2FAResponse)(nil), "Auth.Setup2FAResponse")
 	proto.RegisterType((*Disable2FARequest)(nil), "Auth.Disable2FARequest")
-	proto.RegisterType((*Disable2FAReply)(nil), "Auth.Disable2FAReply")
+	proto.RegisterType((*Disable2FAResponse)(nil), "Auth.Disable2FAResponse")
 	proto.RegisterType((*Verify2FARequest)(nil), "Auth.Verify2FARequest")
-	proto.RegisterType((*Verify2FAReply)(nil), "Auth.Verify2FAReply")
+	proto.RegisterType((*Verify2FAResponse)(nil), "Auth.Verify2FAResponse")
 }
 
 func init() { proto.RegisterFile("auth.proto", fileDescriptor_8bbd6f3875b0e874) }
 
 var fileDescriptor_8bbd6f3875b0e874 = []byte{
-	// 484 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x94, 0xcf, 0x6e, 0xd3, 0x40,
-	0x10, 0xc6, 0xe3, 0x28, 0x01, 0x77, 0x28, 0x4d, 0x3a, 0xa4, 0x21, 0xac, 0x90, 0x29, 0x7b, 0x40,
-	0x15, 0x12, 0x41, 0x2a, 0x97, 0x4a, 0x05, 0x84, 0x29, 0x02, 0x21, 0x95, 0x8b, 0x2b, 0xb8, 0xa2,
-	0x6d, 0x32, 0xa4, 0x56, 0x5c, 0xaf, 0x63, 0xaf, 0x41, 0x79, 0x0a, 0xae, 0x3c, 0x12, 0x47, 0x1e,
-	0x01, 0x85, 0x17, 0x41, 0xde, 0x8d, 0x9b, 0xc4, 0x76, 0x5a, 0x29, 0xb7, 0xcc, 0x9f, 0xef, 0x9b,
-	0xcd, 0xee, 0x6f, 0x0c, 0x20, 0x52, 0x75, 0xd1, 0x8f, 0x62, 0xa9, 0x24, 0x36, 0xdc, 0x54, 0x5d,
-	0xf0, 0x13, 0x68, 0x79, 0x34, 0xf2, 0x13, 0x45, 0xb1, 0x47, 0x93, 0x94, 0x12, 0x85, 0x1d, 0x68,
-	0xd2, 0xa5, 0xf0, 0x83, 0x9e, 0xb5, 0x6f, 0x1d, 0x6c, 0x79, 0x26, 0x40, 0x06, 0x76, 0x24, 0x92,
-	0xe4, 0x87, 0x8c, 0x87, 0xbd, 0xba, 0x2e, 0x5c, 0xc5, 0xfc, 0x11, 0xdc, 0x5d, 0x98, 0x44, 0xc1,
-	0x14, 0x77, 0xa0, 0x2e, 0xc7, 0x5a, 0x6f, 0x7b, 0x75, 0x39, 0xe6, 0x6f, 0x60, 0xfb, 0x54, 0x8e,
-	0xfc, 0x70, 0xf3, 0x11, 0x1c, 0x60, 0xee, 0x90, 0xf9, 0x77, 0xa0, 0xa9, 0xe4, 0x98, 0xc2, 0x5c,
-	0xaf, 0x03, 0x7e, 0x0a, 0xbd, 0xcf, 0xd1, 0x50, 0x28, 0x3a, 0x89, 0x69, 0x48, 0xa1, 0xf2, 0x45,
-	0x90, 0x6c, 0x3e, 0xf1, 0x00, 0xba, 0x15, 0x6e, 0x55, 0xff, 0xae, 0x0f, 0x5d, 0x77, 0xa0, 0xfc,
-	0xef, 0x42, 0x91, 0x3b, 0x18, 0xc8, 0x34, 0x54, 0xd7, 0x4e, 0xe5, 0x4f, 0xa0, 0x53, 0xea, 0xaf,
-	0xf2, 0x7d, 0x0a, 0xf8, 0x81, 0x42, 0x8a, 0x85, 0xa2, 0xc3, 0xf7, 0xee, 0xf5, 0x9e, 0xcf, 0xa0,
-	0xbd, 0xd2, 0x9b, 0xf9, 0x3d, 0x00, 0x7b, 0x12, 0x7f, 0xf5, 0x2f, 0xc5, 0x88, 0x74, 0xf3, 0xb6,
-	0x77, 0x7b, 0x12, 0x7f, 0xcc, 0x42, 0x7e, 0x0c, 0xad, 0x33, 0x52, 0x69, 0x74, 0x93, 0x2f, 0x22,
-	0x34, 0x06, 0x72, 0x48, 0xf3, 0xdb, 0xd1, 0xbf, 0xb3, 0xe7, 0x5e, 0x88, 0xab, 0x0e, 0xfe, 0x0a,
-	0x76, 0xdf, 0xf9, 0x89, 0x38, 0x0f, 0x68, 0x23, 0xff, 0xc7, 0xd0, 0x5a, 0x96, 0x57, 0x4d, 0x78,
-	0x09, 0xed, 0x2f, 0x14, 0xfb, 0xdf, 0xa6, 0x1b, 0x0d, 0xd8, 0x87, 0x9d, 0x25, 0x75, 0x85, 0xff,
-	0xe1, 0xcf, 0x06, 0xe8, 0xfd, 0xc0, 0x23, 0xb0, 0x73, 0xb4, 0x71, 0xaf, 0x9f, 0xa5, 0xfa, 0x85,
-	0x7d, 0x61, 0xf7, 0x8a, 0xe9, 0x28, 0x98, 0xf2, 0x1a, 0x3e, 0x87, 0xa6, 0x26, 0x16, 0xd1, 0xd4,
-	0x97, 0x17, 0x80, 0xb5, 0x57, 0x72, 0x46, 0x70, 0x06, 0xbb, 0x25, 0xe0, 0xd0, 0x31, 0x8d, 0xeb,
-	0xb8, 0x66, 0x0f, 0xd7, 0xd6, 0x8d, 0xe9, 0x27, 0x68, 0x15, 0x58, 0xc3, 0xb9, 0xa4, 0x1a, 0x59,
-	0xc6, 0xd6, 0x54, 0x8d, 0x9d, 0x0b, 0x77, 0x96, 0x30, 0xc3, 0x9e, 0x69, 0x2e, 0x53, 0xca, 0xba,
-	0x15, 0x15, 0x63, 0x71, 0x04, 0x76, 0x4e, 0x4f, 0x7e, 0xa3, 0x05, 0x14, 0xf3, 0x1b, 0x5d, 0x81,
-	0x8c, 0xd7, 0xf0, 0x35, 0xc0, 0x82, 0x0b, 0xbc, 0x6f, 0x9a, 0x4a, 0xa0, 0xb1, 0xbd, 0x72, 0xc1,
-	0xe8, 0x8f, 0x61, 0xeb, 0xea, 0xd9, 0x71, 0x7e, 0xc0, 0x22, 0x45, 0xac, 0x53, 0xca, 0x6b, 0xf1,
-	0xdb, 0xf6, 0xef, 0x99, 0x63, 0xfd, 0x99, 0x39, 0xd6, 0xdf, 0x99, 0x63, 0xfd, 0xfa, 0xe7, 0xd4,
-	0xce, 0x6f, 0xe9, 0xef, 0xe8, 0x8b, 0xff, 0x01, 0x00, 0x00, 0xff, 0xff, 0xbe, 0x03, 0x9b, 0x8a,
-	0x55, 0x05, 0x00, 0x00,
+	// 487 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x94, 0xdd, 0x6e, 0xd3, 0x40,
+	0x10, 0x85, 0xe3, 0x28, 0x01, 0x77, 0x28, 0x24, 0x99, 0x96, 0xc6, 0xb1, 0xc0, 0xa0, 0x05, 0x24,
+	0x7e, 0xa4, 0x08, 0x85, 0xcb, 0x00, 0xc2, 0xb4, 0x02, 0x21, 0xf5, 0x02, 0x19, 0xd1, 0x5b, 0xb4,
+	0x4d, 0x86, 0xd4, 0x4a, 0xea, 0x75, 0xbc, 0x6b, 0x10, 0x6f, 0xc2, 0x1b, 0xf0, 0x2a, 0x5c, 0xf2,
+	0x08, 0x28, 0xbc, 0x08, 0xca, 0xfa, 0x27, 0xa9, 0x1d, 0xb7, 0x52, 0xee, 0x32, 0x33, 0x67, 0xce,
+	0x89, 0xd7, 0xdf, 0x1a, 0x80, 0xc7, 0xea, 0xac, 0x1f, 0x46, 0x42, 0x09, 0x6c, 0xb8, 0xb1, 0x3a,
+	0x63, 0x87, 0xd0, 0xf2, 0x68, 0xe2, 0x4b, 0x45, 0x91, 0x47, 0xf3, 0x98, 0xa4, 0xc2, 0x7d, 0x68,
+	0xd2, 0x39, 0xf7, 0x67, 0x96, 0x71, 0xdf, 0x78, 0xbc, 0xe3, 0x25, 0x05, 0xda, 0x60, 0x86, 0x5c,
+	0xca, 0xef, 0x22, 0x1a, 0x5b, 0x75, 0x3d, 0xc8, 0x6b, 0xc6, 0xa0, 0xbd, 0x32, 0x91, 0xa1, 0x08,
+	0x24, 0xe1, 0x2d, 0xa8, 0x8b, 0xa9, 0xb6, 0x30, 0xbd, 0xba, 0x98, 0xb2, 0x37, 0xb0, 0x7b, 0x2c,
+	0x26, 0x7e, 0xb0, 0x7d, 0xca, 0x23, 0xb8, 0x99, 0x3a, 0xa4, 0x11, 0xfb, 0xd0, 0x54, 0x62, 0x4a,
+	0x41, 0x66, 0xa1, 0x0b, 0x76, 0x0c, 0xd6, 0xe7, 0x70, 0xcc, 0x15, 0x1d, 0x46, 0x34, 0xa6, 0x40,
+	0xf9, 0x7c, 0x26, 0xb7, 0x0f, 0x7d, 0x06, 0xbd, 0x0d, 0x6e, 0x15, 0xcf, 0xd8, 0x87, 0x03, 0x77,
+	0xa4, 0xfc, 0x6f, 0x5c, 0x91, 0x3b, 0x1a, 0x89, 0x38, 0x50, 0x97, 0x06, 0xb3, 0x27, 0xd0, 0x2d,
+	0xe9, 0x2b, 0xac, 0x9f, 0x02, 0xbe, 0xa7, 0x80, 0x22, 0xae, 0x68, 0xf0, 0xce, 0xbd, 0xdc, 0xf6,
+	0x39, 0xec, 0x5d, 0xd0, 0xa6, 0x96, 0x3d, 0x30, 0xe7, 0xd1, 0x17, 0xff, 0x9c, 0x4f, 0x48, 0xeb,
+	0x77, 0xbd, 0xeb, 0xf3, 0xe8, 0xc3, 0xb2, 0x64, 0x43, 0x68, 0x7d, 0x22, 0x15, 0x87, 0x57, 0x59,
+	0x23, 0x42, 0x63, 0x24, 0xc6, 0x94, 0x1e, 0x93, 0xfe, 0xbd, 0x7c, 0xfb, 0xab, 0xe5, 0x8a, 0xbf,
+	0xff, 0x0a, 0x3a, 0x47, 0xbe, 0xe4, 0xa7, 0x33, 0xda, 0x2a, 0xe2, 0x21, 0xe0, 0xfa, 0x7a, 0x45,
+	0xc8, 0x4b, 0x68, 0x9f, 0x50, 0xe4, 0x7f, 0xfd, 0xb1, 0x55, 0xc6, 0x03, 0xe8, 0xac, 0x6d, 0x6f,
+	0x8e, 0x18, 0xfc, 0x6a, 0x80, 0xbe, 0x37, 0x38, 0x04, 0x33, 0x43, 0x1e, 0x6f, 0xf7, 0x97, 0xad,
+	0x7e, 0xe1, 0x1e, 0xd9, 0x07, 0xc5, 0x76, 0xe2, 0xc9, 0x6a, 0x38, 0x80, 0xa6, 0x26, 0x19, 0x31,
+	0x91, 0xac, 0x5f, 0x0c, 0x7b, 0xef, 0x42, 0x2f, 0xdf, 0x39, 0x81, 0x4e, 0x09, 0x44, 0x74, 0x12,
+	0x6d, 0x15, 0xef, 0xf6, 0xbd, 0xca, 0x79, 0xee, 0xfb, 0x11, 0x5a, 0x05, 0x06, 0xf1, 0x4e, 0xb2,
+	0xb5, 0x19, 0x65, 0xfb, 0x6e, 0xc5, 0x34, 0x77, 0x3c, 0x82, 0x1b, 0x6b, 0xf8, 0xa1, 0x95, 0xe8,
+	0xcb, 0xf4, 0xda, 0xbd, 0x0d, 0x93, 0xdc, 0x65, 0x08, 0x66, 0x46, 0x55, 0x76, 0xc0, 0x05, 0x44,
+	0xb3, 0x03, 0x2e, 0xc2, 0xc7, 0x6a, 0xe8, 0x02, 0xac, 0x78, 0xc1, 0x6e, 0xa2, 0x2b, 0x01, 0x68,
+	0x5b, 0xe5, 0x41, 0x6e, 0xf1, 0x1a, 0x76, 0x72, 0x1c, 0x30, 0x4d, 0x2a, 0xd2, 0x65, 0x77, 0x4b,
+	0xfd, 0x6c, 0xff, 0x6d, 0xfb, 0xf7, 0xc2, 0x31, 0xfe, 0x2c, 0x1c, 0xe3, 0xef, 0xc2, 0x31, 0x7e,
+	0xfe, 0x73, 0x6a, 0xa7, 0xd7, 0xf4, 0x77, 0xf7, 0xc5, 0xff, 0x00, 0x00, 0x00, 0xff, 0xff, 0x27,
+	0x86, 0xc4, 0xeb, 0x85, 0x05, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -891,14 +891,14 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type AuthClient interface {
-	Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*RegisterReply, error)
-	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginReply, error)
-	UpdateCredentials(ctx context.Context, in *UpdateCredentialsRequest, opts ...grpc.CallOption) (*UpdateCredentialsReply, error)
-	ActivateAccount(ctx context.Context, in *ActivateAccountRequest, opts ...grpc.CallOption) (*ActivateAccountReply, error)
-	Generate2FA(ctx context.Context, in *Generate2FARequest, opts ...grpc.CallOption) (*Generate2FAReply, error)
-	Setup2FA(ctx context.Context, in *Setup2FARequest, opts ...grpc.CallOption) (*Setup2FAReply, error)
-	Disable2FA(ctx context.Context, in *Disable2FARequest, opts ...grpc.CallOption) (*Disable2FAReply, error)
-	Verify2FA(ctx context.Context, in *Verify2FARequest, opts ...grpc.CallOption) (*Verify2FAReply, error)
+	Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*RegisterResponse, error)
+	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
+	UpdateCredentials(ctx context.Context, in *UpdateCredentialsRequest, opts ...grpc.CallOption) (*UpdateCredentialsResponse, error)
+	ActivateAccount(ctx context.Context, in *ActivateAccountRequest, opts ...grpc.CallOption) (*ActivateAccountResponse, error)
+	Generate2FA(ctx context.Context, in *Generate2FARequest, opts ...grpc.CallOption) (*Generate2FAResponse, error)
+	Setup2FA(ctx context.Context, in *Setup2FARequest, opts ...grpc.CallOption) (*Setup2FAResponse, error)
+	Disable2FA(ctx context.Context, in *Disable2FARequest, opts ...grpc.CallOption) (*Disable2FAResponse, error)
+	Verify2FA(ctx context.Context, in *Verify2FARequest, opts ...grpc.CallOption) (*Verify2FAResponse, error)
 }
 
 type authClient struct {
@@ -909,8 +909,8 @@ func NewAuthClient(cc *grpc.ClientConn) AuthClient {
 	return &authClient{cc}
 }
 
-func (c *authClient) Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*RegisterReply, error) {
-	out := new(RegisterReply)
+func (c *authClient) Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*RegisterResponse, error) {
+	out := new(RegisterResponse)
 	err := c.cc.Invoke(ctx, "/Auth.Auth/Register", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -918,8 +918,8 @@ func (c *authClient) Register(ctx context.Context, in *RegisterRequest, opts ...
 	return out, nil
 }
 
-func (c *authClient) Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginReply, error) {
-	out := new(LoginReply)
+func (c *authClient) Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error) {
+	out := new(LoginResponse)
 	err := c.cc.Invoke(ctx, "/Auth.Auth/Login", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -927,8 +927,8 @@ func (c *authClient) Login(ctx context.Context, in *LoginRequest, opts ...grpc.C
 	return out, nil
 }
 
-func (c *authClient) UpdateCredentials(ctx context.Context, in *UpdateCredentialsRequest, opts ...grpc.CallOption) (*UpdateCredentialsReply, error) {
-	out := new(UpdateCredentialsReply)
+func (c *authClient) UpdateCredentials(ctx context.Context, in *UpdateCredentialsRequest, opts ...grpc.CallOption) (*UpdateCredentialsResponse, error) {
+	out := new(UpdateCredentialsResponse)
 	err := c.cc.Invoke(ctx, "/Auth.Auth/UpdateCredentials", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -936,8 +936,8 @@ func (c *authClient) UpdateCredentials(ctx context.Context, in *UpdateCredential
 	return out, nil
 }
 
-func (c *authClient) ActivateAccount(ctx context.Context, in *ActivateAccountRequest, opts ...grpc.CallOption) (*ActivateAccountReply, error) {
-	out := new(ActivateAccountReply)
+func (c *authClient) ActivateAccount(ctx context.Context, in *ActivateAccountRequest, opts ...grpc.CallOption) (*ActivateAccountResponse, error) {
+	out := new(ActivateAccountResponse)
 	err := c.cc.Invoke(ctx, "/Auth.Auth/ActivateAccount", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -945,8 +945,8 @@ func (c *authClient) ActivateAccount(ctx context.Context, in *ActivateAccountReq
 	return out, nil
 }
 
-func (c *authClient) Generate2FA(ctx context.Context, in *Generate2FARequest, opts ...grpc.CallOption) (*Generate2FAReply, error) {
-	out := new(Generate2FAReply)
+func (c *authClient) Generate2FA(ctx context.Context, in *Generate2FARequest, opts ...grpc.CallOption) (*Generate2FAResponse, error) {
+	out := new(Generate2FAResponse)
 	err := c.cc.Invoke(ctx, "/Auth.Auth/Generate2FA", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -954,8 +954,8 @@ func (c *authClient) Generate2FA(ctx context.Context, in *Generate2FARequest, op
 	return out, nil
 }
 
-func (c *authClient) Setup2FA(ctx context.Context, in *Setup2FARequest, opts ...grpc.CallOption) (*Setup2FAReply, error) {
-	out := new(Setup2FAReply)
+func (c *authClient) Setup2FA(ctx context.Context, in *Setup2FARequest, opts ...grpc.CallOption) (*Setup2FAResponse, error) {
+	out := new(Setup2FAResponse)
 	err := c.cc.Invoke(ctx, "/Auth.Auth/Setup2FA", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -963,8 +963,8 @@ func (c *authClient) Setup2FA(ctx context.Context, in *Setup2FARequest, opts ...
 	return out, nil
 }
 
-func (c *authClient) Disable2FA(ctx context.Context, in *Disable2FARequest, opts ...grpc.CallOption) (*Disable2FAReply, error) {
-	out := new(Disable2FAReply)
+func (c *authClient) Disable2FA(ctx context.Context, in *Disable2FARequest, opts ...grpc.CallOption) (*Disable2FAResponse, error) {
+	out := new(Disable2FAResponse)
 	err := c.cc.Invoke(ctx, "/Auth.Auth/Disable2FA", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -972,8 +972,8 @@ func (c *authClient) Disable2FA(ctx context.Context, in *Disable2FARequest, opts
 	return out, nil
 }
 
-func (c *authClient) Verify2FA(ctx context.Context, in *Verify2FARequest, opts ...grpc.CallOption) (*Verify2FAReply, error) {
-	out := new(Verify2FAReply)
+func (c *authClient) Verify2FA(ctx context.Context, in *Verify2FARequest, opts ...grpc.CallOption) (*Verify2FAResponse, error) {
+	out := new(Verify2FAResponse)
 	err := c.cc.Invoke(ctx, "/Auth.Auth/Verify2FA", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -983,14 +983,14 @@ func (c *authClient) Verify2FA(ctx context.Context, in *Verify2FARequest, opts .
 
 // AuthServer is the server API for Auth service.
 type AuthServer interface {
-	Register(context.Context, *RegisterRequest) (*RegisterReply, error)
-	Login(context.Context, *LoginRequest) (*LoginReply, error)
-	UpdateCredentials(context.Context, *UpdateCredentialsRequest) (*UpdateCredentialsReply, error)
-	ActivateAccount(context.Context, *ActivateAccountRequest) (*ActivateAccountReply, error)
-	Generate2FA(context.Context, *Generate2FARequest) (*Generate2FAReply, error)
-	Setup2FA(context.Context, *Setup2FARequest) (*Setup2FAReply, error)
-	Disable2FA(context.Context, *Disable2FARequest) (*Disable2FAReply, error)
-	Verify2FA(context.Context, *Verify2FARequest) (*Verify2FAReply, error)
+	Register(context.Context, *RegisterRequest) (*RegisterResponse, error)
+	Login(context.Context, *LoginRequest) (*LoginResponse, error)
+	UpdateCredentials(context.Context, *UpdateCredentialsRequest) (*UpdateCredentialsResponse, error)
+	ActivateAccount(context.Context, *ActivateAccountRequest) (*ActivateAccountResponse, error)
+	Generate2FA(context.Context, *Generate2FARequest) (*Generate2FAResponse, error)
+	Setup2FA(context.Context, *Setup2FARequest) (*Setup2FAResponse, error)
+	Disable2FA(context.Context, *Disable2FARequest) (*Disable2FAResponse, error)
+	Verify2FA(context.Context, *Verify2FARequest) (*Verify2FAResponse, error)
 }
 
 func RegisterAuthServer(s *grpc.Server, srv AuthServer) {
@@ -1215,7 +1215,7 @@ func (m *RegisterRequest) MarshalTo(dAtA []byte) (int, error) {
 	return i, nil
 }
 
-func (m *RegisterReply) Marshal() (dAtA []byte, err error) {
+func (m *RegisterResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalTo(dAtA)
@@ -1225,7 +1225,7 @@ func (m *RegisterReply) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *RegisterReply) MarshalTo(dAtA []byte) (int, error) {
+func (m *RegisterResponse) MarshalTo(dAtA []byte) (int, error) {
 	var i int
 	_ = i
 	var l int
@@ -1279,7 +1279,7 @@ func (m *LoginRequest) MarshalTo(dAtA []byte) (int, error) {
 	return i, nil
 }
 
-func (m *LoginReply) Marshal() (dAtA []byte, err error) {
+func (m *LoginResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalTo(dAtA)
@@ -1289,7 +1289,7 @@ func (m *LoginReply) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *LoginReply) MarshalTo(dAtA []byte) (int, error) {
+func (m *LoginResponse) MarshalTo(dAtA []byte) (int, error) {
 	var i int
 	_ = i
 	var l int
@@ -1339,7 +1339,7 @@ func (m *UpdateCredentialsRequest) MarshalTo(dAtA []byte) (int, error) {
 	return i, nil
 }
 
-func (m *UpdateCredentialsReply) Marshal() (dAtA []byte, err error) {
+func (m *UpdateCredentialsResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalTo(dAtA)
@@ -1349,7 +1349,7 @@ func (m *UpdateCredentialsReply) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *UpdateCredentialsReply) MarshalTo(dAtA []byte) (int, error) {
+func (m *UpdateCredentialsResponse) MarshalTo(dAtA []byte) (int, error) {
 	var i int
 	_ = i
 	var l int
@@ -1397,7 +1397,7 @@ func (m *ActivateAccountRequest) MarshalTo(dAtA []byte) (int, error) {
 	return i, nil
 }
 
-func (m *ActivateAccountReply) Marshal() (dAtA []byte, err error) {
+func (m *ActivateAccountResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalTo(dAtA)
@@ -1407,7 +1407,7 @@ func (m *ActivateAccountReply) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *ActivateAccountReply) MarshalTo(dAtA []byte) (int, error) {
+func (m *ActivateAccountResponse) MarshalTo(dAtA []byte) (int, error) {
 	var i int
 	_ = i
 	var l int
@@ -1455,7 +1455,7 @@ func (m *Generate2FARequest) MarshalTo(dAtA []byte) (int, error) {
 	return i, nil
 }
 
-func (m *Generate2FAReply) Marshal() (dAtA []byte, err error) {
+func (m *Generate2FAResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalTo(dAtA)
@@ -1465,7 +1465,7 @@ func (m *Generate2FAReply) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *Generate2FAReply) MarshalTo(dAtA []byte) (int, error) {
+func (m *Generate2FAResponse) MarshalTo(dAtA []byte) (int, error) {
 	var i int
 	_ = i
 	var l int
@@ -1515,7 +1515,7 @@ func (m *Setup2FARequest) MarshalTo(dAtA []byte) (int, error) {
 	return i, nil
 }
 
-func (m *Setup2FAReply) Marshal() (dAtA []byte, err error) {
+func (m *Setup2FAResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalTo(dAtA)
@@ -1525,7 +1525,7 @@ func (m *Setup2FAReply) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *Setup2FAReply) MarshalTo(dAtA []byte) (int, error) {
+func (m *Setup2FAResponse) MarshalTo(dAtA []byte) (int, error) {
 	var i int
 	_ = i
 	var l int
@@ -1579,7 +1579,7 @@ func (m *Disable2FARequest) MarshalTo(dAtA []byte) (int, error) {
 	return i, nil
 }
 
-func (m *Disable2FAReply) Marshal() (dAtA []byte, err error) {
+func (m *Disable2FAResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalTo(dAtA)
@@ -1589,7 +1589,7 @@ func (m *Disable2FAReply) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *Disable2FAReply) MarshalTo(dAtA []byte) (int, error) {
+func (m *Disable2FAResponse) MarshalTo(dAtA []byte) (int, error) {
 	var i int
 	_ = i
 	var l int
@@ -1643,7 +1643,7 @@ func (m *Verify2FARequest) MarshalTo(dAtA []byte) (int, error) {
 	return i, nil
 }
 
-func (m *Verify2FAReply) Marshal() (dAtA []byte, err error) {
+func (m *Verify2FAResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalTo(dAtA)
@@ -1653,7 +1653,7 @@ func (m *Verify2FAReply) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *Verify2FAReply) MarshalTo(dAtA []byte) (int, error) {
+func (m *Verify2FAResponse) MarshalTo(dAtA []byte) (int, error) {
 	var i int
 	_ = i
 	var l int
@@ -1703,7 +1703,7 @@ func (m *RegisterRequest) Size() (n int) {
 	return n
 }
 
-func (m *RegisterReply) Size() (n int) {
+func (m *RegisterResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1738,7 +1738,7 @@ func (m *LoginRequest) Size() (n int) {
 	return n
 }
 
-func (m *LoginReply) Size() (n int) {
+func (m *LoginResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1774,7 +1774,7 @@ func (m *UpdateCredentialsRequest) Size() (n int) {
 	return n
 }
 
-func (m *UpdateCredentialsReply) Size() (n int) {
+func (m *UpdateCredentialsResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1805,7 +1805,7 @@ func (m *ActivateAccountRequest) Size() (n int) {
 	return n
 }
 
-func (m *ActivateAccountReply) Size() (n int) {
+func (m *ActivateAccountResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1836,7 +1836,7 @@ func (m *Generate2FARequest) Size() (n int) {
 	return n
 }
 
-func (m *Generate2FAReply) Size() (n int) {
+func (m *Generate2FAResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1872,7 +1872,7 @@ func (m *Setup2FARequest) Size() (n int) {
 	return n
 }
 
-func (m *Setup2FAReply) Size() (n int) {
+func (m *Setup2FAResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1907,7 +1907,7 @@ func (m *Disable2FARequest) Size() (n int) {
 	return n
 }
 
-func (m *Disable2FAReply) Size() (n int) {
+func (m *Disable2FAResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1942,7 +1942,7 @@ func (m *Verify2FARequest) Size() (n int) {
 	return n
 }
 
-func (m *Verify2FAReply) Size() (n int) {
+func (m *Verify2FAResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2088,7 +2088,7 @@ func (m *RegisterRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *RegisterReply) Unmarshal(dAtA []byte) error {
+func (m *RegisterResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -2111,10 +2111,10 @@ func (m *RegisterReply) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: RegisterReply: wiretype end group for non-group")
+			return fmt.Errorf("proto: RegisterResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: RegisterReply: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: RegisterResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -2280,7 +2280,7 @@ func (m *LoginRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *LoginReply) Unmarshal(dAtA []byte) error {
+func (m *LoginResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -2303,10 +2303,10 @@ func (m *LoginReply) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: LoginReply: wiretype end group for non-group")
+			return fmt.Errorf("proto: LoginResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: LoginReply: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: LoginResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -2484,7 +2484,7 @@ func (m *UpdateCredentialsRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *UpdateCredentialsReply) Unmarshal(dAtA []byte) error {
+func (m *UpdateCredentialsResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -2507,10 +2507,10 @@ func (m *UpdateCredentialsReply) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: UpdateCredentialsReply: wiretype end group for non-group")
+			return fmt.Errorf("proto: UpdateCredentialsResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: UpdateCredentialsReply: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: UpdateCredentialsResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -2644,7 +2644,7 @@ func (m *ActivateAccountRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *ActivateAccountReply) Unmarshal(dAtA []byte) error {
+func (m *ActivateAccountResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -2667,10 +2667,10 @@ func (m *ActivateAccountReply) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: ActivateAccountReply: wiretype end group for non-group")
+			return fmt.Errorf("proto: ActivateAccountResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: ActivateAccountReply: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: ActivateAccountResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -2804,7 +2804,7 @@ func (m *Generate2FARequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *Generate2FAReply) Unmarshal(dAtA []byte) error {
+func (m *Generate2FAResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -2827,10 +2827,10 @@ func (m *Generate2FAReply) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: Generate2FAReply: wiretype end group for non-group")
+			return fmt.Errorf("proto: Generate2FAResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: Generate2FAReply: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: Generate2FAResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -3010,7 +3010,7 @@ func (m *Setup2FARequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *Setup2FAReply) Unmarshal(dAtA []byte) error {
+func (m *Setup2FAResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -3033,10 +3033,10 @@ func (m *Setup2FAReply) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: Setup2FAReply: wiretype end group for non-group")
+			return fmt.Errorf("proto: Setup2FAResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: Setup2FAReply: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: Setup2FAResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -3202,7 +3202,7 @@ func (m *Disable2FARequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *Disable2FAReply) Unmarshal(dAtA []byte) error {
+func (m *Disable2FAResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -3225,10 +3225,10 @@ func (m *Disable2FAReply) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: Disable2FAReply: wiretype end group for non-group")
+			return fmt.Errorf("proto: Disable2FAResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: Disable2FAReply: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: Disable2FAResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -3394,7 +3394,7 @@ func (m *Verify2FARequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *Verify2FAReply) Unmarshal(dAtA []byte) error {
+func (m *Verify2FAResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -3417,10 +3417,10 @@ func (m *Verify2FAReply) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: Verify2FAReply: wiretype end group for non-group")
+			return fmt.Errorf("proto: Verify2FAResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: Verify2FAReply: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: Verify2FAResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
