@@ -5,6 +5,8 @@ import (
 
 	"github.com/go-redis/redis/v7"
 	opentracing "github.com/opentracing/opentracing-go"
+
+	"github.com/barugoo/oscillo-auth/internal/app/errors"
 )
 
 type AuthService interface {
@@ -18,14 +20,19 @@ type AuthService interface {
 type authService struct {
 	redisClient *redis.Client
 	tracer      opentracing.Tracer
-	kv          map[string]string
 }
 
 func (a *authService) SetKV(ctx context.Context, key, value string) (bool, error) {
-	span := a.StartSpan(ctx, "SetKV")
+	methodName := "SetKV/redis"
+
+	span := a.StartSpan(ctx, methodName)
 	defer span.Finish()
 
-	return a.setKV(key, value)
+	ok, err := a.setKV(key, value)
+	if err != nil {
+		err = a.wrapError(err, methodName)
+	}
+	return ok, err
 }
 
 func (a *authService) setKV(key, value string) (bool, error) {
@@ -44,10 +51,16 @@ func (a *authService) setKV(key, value string) (bool, error) {
 }
 
 func (a *authService) GetKV(ctx context.Context, key string) (string, error) {
-	span := a.StartSpan(ctx, "GetKV")
+	methodName := "GetKV/redis"
+
+	span := a.StartSpan(ctx, methodName)
 	defer span.Finish()
 
-	return a.getKV(key)
+	value, err := a.getKV(key)
+	if err != nil {
+		err = a.wrapError(err, methodName)
+	}
+	return value, err
 }
 
 func (a *authService) getKV(key string) (string, error) {
@@ -73,10 +86,16 @@ func (a *authService) ContextWithSpan(ctx context.Context, span opentracing.Span
 	return opentracing.ContextWithSpan(ctx, span)
 }
 
+func (a *authService) wrapError(err error, method string) error {
+	return errors.ServiceError{
+		Method: method,
+		Err:    err,
+	}
+}
+
 func NewAuthService(redisClient *redis.Client, tracer opentracing.Tracer) AuthService {
 	return &authService{
 		redisClient: redisClient,
 		tracer:      tracer,
-		kv:          make(map[string]string),
 	}
 }
