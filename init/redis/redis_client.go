@@ -1,8 +1,9 @@
 package redis
 
 import (
-	"github.com/barugoo/oscillo-auth/config"
 	"github.com/go-redis/redis/v7"
+
+	"github.com/barugoo/oscillo-auth/config"
 )
 
 func NewRedisClient(config *config.ServiceConfig) (*redis.Client, error) {

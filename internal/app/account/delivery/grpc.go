@@ -9,12 +9,11 @@ import (
 	"google.golang.org/grpc/status"
 
 	pb "github.com/barugoo/oscillo-auth/api/grpc"
-
-	models "github.com/barugoo/oscillo-auth/internal/app/account"
-
-	"github.com/barugoo/oscillo-auth/internal/app/account/usecase"
 	errs "github.com/barugoo/oscillo-auth/internal/app/errors"
 	"github.com/barugoo/oscillo-auth/internal/app/service"
+
+	models "github.com/barugoo/oscillo-auth/internal/app/account"
+	"github.com/barugoo/oscillo-auth/internal/app/account/usecase"
 )
 
 const (

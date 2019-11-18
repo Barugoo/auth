@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"github.com/barugoo/oscillo-auth/internal/app/errors"
 	"image/png"
 
 	"github.com/dgrijalva/jwt-go"
@@ -14,9 +13,10 @@ import (
 
 	"github.com/barugoo/oscillo-auth/config"
 
-	models "github.com/barugoo/oscillo-auth/internal/app/account"
+	"github.com/barugoo/oscillo-auth/internal/app/errors"
 	"github.com/barugoo/oscillo-auth/internal/app/service"
 
+	models "github.com/barugoo/oscillo-auth/internal/app/account"
 	"github.com/barugoo/oscillo-auth/internal/app/account/repository"
 )
 
